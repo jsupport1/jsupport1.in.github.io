@@ -1,5 +1,5 @@
 {
-  "name": "JSupport1",
+  "name": "DailyNumberTask",
   "short_name": "NumTask",
   "description": "Free number to words converter — integers, currency, cheque writing, Roman numerals",
   "start_url": "/",
@@ -9,14 +9,38 @@
   "background_color": "#F6F4F0",
   "theme_color": "#C84B2F",
   "lang": "en",
-  "categories": ["utilities", "productivity", "finance"],
+  "categories": [
+    "utilities",
+    "productivity",
+    "finance"
+  ],
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
   "screenshots": [
-    { "src": "/icons/screenshot-desktop.png", "sizes": "1280x720", "type": "image/png", "form_factor": "wide" },
-    { "src": "/icons/screenshot-mobile.png",  "sizes": "390x844",  "type": "image/png", "form_factor": "narrow" }
+    {
+      "src": "/icons/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/icons/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
   ],
   "shortcuts": [
     {
