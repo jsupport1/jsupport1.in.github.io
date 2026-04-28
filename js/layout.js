@@ -60,7 +60,7 @@ export function renderFooter() {
     <!-- Footer Ad Slot (hidden via CSS .ad-slot { display:none }) -->
     <div class="ad-slot ad-slot--footer" aria-hidden="true">
       <ins class="adsbygoogle" style="display:block"
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="FOOTER_AD_SLOT"
+        data-ad-client="ca-pub-3643864519819772" data-ad-slot="FOOTER_AD_SLOT"
         data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
     <div class="footer-grid">
