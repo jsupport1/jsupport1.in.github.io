@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dnt-v1.0.0';
+const CACHE_NAME = 'dnt-v1.0.1';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -11,6 +11,12 @@ const STATIC_ASSETS = [
   './pages/disclaimer.html',
   './pages/cookie-policy.html',
   './pages/copyright.html',
+  './pages/blog.html',
+  './pages/blog-number-to-words.html',
+  './pages/blog-cheque-writing-india.html',
+  './pages/blog-emi-calculation.html',
+  './pages/blog-roman-numerals.html',
+  './pages/blog-currency-words.html',
   './css/main.css',
   './js/engine.js',
   './js/emi-engine.js',
