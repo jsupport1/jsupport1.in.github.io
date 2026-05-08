@@ -20,16 +20,16 @@ export function renderHeader(activePage = '') {
       <span class="logo__name">Daily<span>Number</span>Task</span>
     </a>
     <nav class="site-nav" id="siteNav" role="navigation" aria-label="Main navigation">
-      <a href="${isRoot ? './index.html' : '../index.html'}" class="nav-link ${activePage==='home'   ?'active':''}" aria-current="${activePage==='home'   ?'page':'false'}">Home</a>
-      <a href="${pagePrefix}tool.html"           class="nav-link ${activePage==='tool'   ?'active':''}" aria-current="${activePage==='tool'   ?'page':'false'}">Converter</a>
-      <a href="${pagePrefix}emi-calculator.html" class="nav-link ${activePage==='emi'    ?'active':''}" aria-current="${activePage==='emi'    ?'page':'false'}">EMI Calc</a>
-      <a href="${pagePrefix}about.html"          class="nav-link ${activePage==='about'  ?'active':''}" aria-current="${activePage==='about'  ?'page':'false'}">About</a>
-      <a href="${pagePrefix}blog.html"           class="nav-link ${activePage==='blog'   ?'active':''}" aria-current="${activePage==='blog'   ?'page':'false'}">Blog</a>
-      <a href="${pagePrefix}contact.html"        class="nav-link ${activePage==='contact'?'active':''}" aria-current="${activePage==='contact'?'page':'false'}">Contact</a>
+      <a href="${isRoot ? './index.html' : '../index.html'}" class="nav-link ${activePage === 'home' ? 'active' : ''}" aria-current="${activePage === 'home' ? 'page' : 'false'}">Home</a>
+      <a href="${pagePrefix}tool.html"           class="nav-link ${activePage === 'tool' ? 'active' : ''}" aria-current="${activePage === 'tool' ? 'page' : 'false'}">Converter</a>
+      <a href="${pagePrefix}emi-calculator.html" class="nav-link ${activePage === 'emi' ? 'active' : ''}" aria-current="${activePage === 'emi' ? 'page' : 'false'}">EMI Calc</a>
+      <a href="${pagePrefix}about.html"          class="nav-link ${activePage === 'about' ? 'active' : ''}" aria-current="${activePage === 'about' ? 'page' : 'false'}">About</a>
+      <a href="${pagePrefix}blog.html"           class="nav-link ${activePage === 'blog' ? 'active' : ''}" aria-current="${activePage === 'blog' ? 'page' : 'false'}">Blog</a>
+      <a href="${pagePrefix}contact.html"        class="nav-link ${activePage === 'contact' ? 'active' : ''}" aria-current="${activePage === 'contact' ? 'page' : 'false'}">Contact</a>
       ${ctaBtn}
       <!-- Social icons in nav (desktop) -->
       <div class="nav-social" aria-label="Follow us">
-        <a href="https://www.youtube.com/@DailyNumberTask" target="_blank" rel="noopener noreferrer"
+        <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer"
           class="nav-social-link nav-social-link--youtube"
           aria-label="DailyNumberTask on YouTube" title="YouTube">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -71,7 +71,7 @@ export function renderFooter() {
         <p class="footer-brand__desc">Free, fast, privacy-first number tools — number-to-words converter &amp; EMI calculator. Works offline. No account needed.</p>
         <!-- Social links in footer -->
         <div class="social-links mt-2" aria-label="Follow DailyNumberTask">
-          <a href="https://www.youtube.com/@DailyNumberTask" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer"
             class="social-link social-link--youtube" aria-label="YouTube channel" title="YouTube">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/>
@@ -104,7 +104,7 @@ export function renderFooter() {
           <li><a href="${pagePrefix}about.html">About Us</a></li>
           <li><a href="${pagePrefix}contact.html">Contact</a></li>
           <li>
-            <a href="https://www.youtube.com/@DailyNumberTask" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer">
               YouTube
             </a>
           </li>
