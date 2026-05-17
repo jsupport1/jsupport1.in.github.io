@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Unit Converter — Convert Length, Weight, Temperature — DailyNumberTask</title>
+  <meta name="description"
+    content="Free, fast, and multi-unit online converter. Convert between length, mass/weight, area, volume, and temperature instantly. 100% client-side.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/unit/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="All-in-One Unit Converter Online">
+  <meta property="og:description" content="Instantly convert length, weight, area, volume, and temperature. Compare all units in a single category at once.">
+  <meta property="og:url" content="https://dailynumbertask.in/unit/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .converter-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    /* Category Buttons selector bar */
+    .cat-selector-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--clr-border);
+      padding-bottom: 1.25rem;
+    }
+
+    .cat-btn {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      padding: 0.65rem 1.25rem;
+      border-radius: 100px;
+      font-size: var(--sz-sm);
+      font-weight: 600;
+      color: var(--clr-ink-2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all var(--transition);
+    }
+
+    .cat-btn:hover {
+      background: var(--clr-accent-bg);
+      border-color: var(--clr-accent);
+      color: var(--clr-accent);
+    }
+
+    .cat-btn.active {
+      background: var(--clr-accent);
+      border-color: var(--clr-accent);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Input-output dual grid */
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .io-box {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-input, .custom-select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-surface);
+      color: var(--clr-ink);
+      outline: none;
+      transition: all var(--transition);
+    }
+
+    .custom-input:focus, .custom-select:focus {
+      border-color: var(--clr-accent);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    /* Comparison Grid list */
+    .comparison-section {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.75rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .comp-card {
+      background: var(--clr-surface);
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: all var(--transition);
+    }
+
+    .comp-card:hover {
+      border-color: var(--clr-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .comp-value {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: var(--sz-md);
+      font-weight: 700;
+      color: var(--clr-ink);
+      word-break: break-all;
+      margin-bottom: 0.25rem;
+    }
+
+    .comp-label {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Unit Converter introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Unit Converter</span>
+        </nav>
+        <h1>Unit Converter</h1>
+        <p class="lead">Convert between metric and imperial units instantly. Switch categories, customize parameters, and see all comparison values simultaneously in real-time.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="converter-card">
+          <!-- Category Selector -->
+          <div class="cat-selector-bar" id="catSelector">
+            <button class="cat-btn active" data-cat="length">📏 Length</button>
+            <button class="cat-btn" data-cat="weight">⚖️ Weight</button>
+            <button class="cat-btn" data-cat="temperature">🌡️ Temp</button>
+            <button class="cat-btn" data-cat="area">📐 Area</button>
+            <button class="cat-btn" data-cat="volume">🥛 Volume</button>
+          </div>
+
+          <!-- Dual Conversion Grid -->
+          <div class="io-grid">
+            <!-- From Box -->
+            <div class="io-box">
+              <div class="form-group mb-2">
+                <label for="fromVal">From Amount</label>
+                <input type="number" class="custom-input" id="fromVal" value="1">
+              </div>
+              <div class="form-group">
+                <label for="fromUnit">From Unit</label>
+                <select class="custom-select" id="fromUnit">
+                  <!-- Filled dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <!-- To Box -->
+            <div class="io-box">
+              <div class="form-group mb-2">
+                <label for="toVal">To Amount</label>
+                <input type="text" class="custom-input" id="toVal" readonly style="font-family: monospace; font-weight: 700; color: var(--clr-accent);">
+              </div>
+              <div class="form-group">
+                <label for="toUnit">To Unit</label>
+                <select class="custom-select" id="toUnit">
+                  <!-- Filled dynamically -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Complete Comparison Grid -->
+          <div class="comparison-section">
+            <h3 style="font-size: var(--sz-md); font-family: var(--font-body); font-weight: 600; margin-bottom: 0.5rem;">
+              ⚡ All Conversion Metrics
+            </h3>
+            <p class="text-muted" style="font-size: var(--sz-xs); margin-bottom: 1.25rem;">Values below represent matching conversion units at a single glance:</p>
+            
+            <div class="comparison-grid" id="compGrid">
+              <!-- Grid items filled by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Using the All-in-One Unit Converter</h2>
+          <p>Converting metrics between international standards (Metric System) and standard United States systems (Imperial System) is highly essential in science, manufacturing, travel, culinary preparation, and engineering.</p>
+          <h3>How Multi-Unit Comparison Grid Helps</h3>
+          <p>Most basic converters only calculate a single "from-to" node at a time. This unit converter calculates a full mathematical matrix. As soon as you type or edit the amount, the comparison card grid shows that exact value translated into *all* other units in the active category. This completely eliminates the need to perform separate conversions for each target unit.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('unit');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const fromVal = document.getElementById('fromVal');
+    const toVal = document.getElementById('toVal');
+    const fromUnitSelect = document.getElementById('fromUnit');
+    const toUnitSelect = document.getElementById('toUnit');
+    const catSelector = document.getElementById('catSelector');
+    const compGrid = document.getElementById('compGrid');
+
+    // Units dictionary and scaling factors relative to base unit
+    const unitsData = {
+      length: {
+        base: 'm',
+        list: [
+          { name: 'Meters (m)', id: 'm', factor: 1 },
+          { name: 'Kilometers (km)', id: 'km', factor: 1000 },
+          { name: 'Centimeters (cm)', id: 'cm', factor: 0.01 },
+          { name: 'Millimeters (mm)', id: 'mm', factor: 0.001 },
+          { name: 'Miles (mi)', id: 'mi', factor: 1609.344 },
+          { name: 'Yards (yd)', id: 'yd', factor: 0.9144 },
+          { name: 'Feet (ft)', id: 'ft', factor: 0.3048 },
+          { name: 'Inches (in)', id: 'in', factor: 0.0254 }
+        ]
+      },
+      weight: {
+        base: 'kg',
+        list: [
+          { name: 'Kilograms (kg)', id: 'kg', factor: 1 },
+          { name: 'Grams (g)', id: 'g', factor: 0.001 },
+          { name: 'Milligrams (mg)', id: 'mg', factor: 0.000001 },
+          { name: 'Pounds (lb)', id: 'lb', factor: 0.45359237 },
+          { name: 'Ounces (oz)', id: 'oz', factor: 0.028349523 },
+          { name: 'Stone (st)', id: 'st', factor: 6.35029318 }
+        ]
+      },
+      temperature: {
+        base: 'C',
+        list: [
+          { name: 'Celsius (°C)', id: 'C' },
+          { name: 'Fahrenheit (°F)', id: 'F' },
+          { name: 'Kelvin (K)', id: 'K' }
+        ]
+      },
+      area: {
+        base: 'm2',
+        list: [
+          { name: 'Square Meters (m²)', id: 'm2', factor: 1 },
+          { name: 'Square Kilometers (km²)', id: 'km2', factor: 1000000 },
+          { name: 'Square Miles (mi²)', id: 'mi2', factor: 2589988.11 },
+          { name: 'Acres (ac)', id: 'ac', factor: 4046.85642 },
+          { name: 'Hectares (ha)', id: 'ha', factor: 10000 }
+        ]
+      },
+      volume: {
+        base: 'L',
+        list: [
+          { name: 'Liters (L)', id: 'L', factor: 1 },
+          { name: 'Milliliters (mL)', id: 'mL', factor: 0.001 },
+          { name: 'Gallons (gal, US)', id: 'gal', factor: 3.78541178 },
+          { name: 'Quarts (qt, US)', id: 'qt', factor: 0.946352946 },
+          { name: 'Cups (cup)', id: 'cup', factor: 0.236588236 }
+        ]
+      }
+    };
+
+    let activeCategory = 'length';
+
+    function loadCategory(cat) {
+      activeCategory = cat;
+      const data = unitsData[cat];
+      
+      // Populate select lists
+      fromUnitSelect.innerHTML = data.list.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+      toUnitSelect.innerHTML = data.list.map(u => `<option value="${u.id}">${u.name}</option>`).join('');
+
+      // Default values mapping
+      if (cat === 'temperature') {
+        fromUnitSelect.value = 'C';
+        toUnitSelect.value = 'F';
+      } else {
+        fromUnitSelect.value = data.list[0].id;
+        toUnitSelect.value = data.list[4] ? data.list[4].id : data.list[1].id;
+      }
+
+      calculate();
+    }
+
+    function calculate() {
+      const val = parseFloat(fromVal.value);
+      if (isNaN(val)) {
+        toVal.value = '';
+        compGrid.innerHTML = '';
+        return;
+      }
+
+      const fUnit = fromUnitSelect.value;
+      const tUnit = toUnitSelect.value;
+      
+      // Compute core result
+      const coreResult = convert(val, fUnit, tUnit, activeCategory);
+      toVal.value = formatVal(coreResult);
+
+      // Render full comparison grid
+      const list = unitsData[activeCategory].list;
+      compGrid.innerHTML = list.map(u => {
+        const value = convert(val, fUnit, u.id, activeCategory);
+        return `
+        <div class="comp-card">
+          <div class="comp-value">${formatVal(value)}</div>
+          <div class="comp-label">${u.id}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function convert(val, from, to, cat) {
+      if (from === to) return val;
+
+      if (cat === 'temperature') {
+        // Temperature logic (non-linear scaling)
+        let celsius = 0;
+        if (from === 'C') celsius = val;
+        else if (from === 'F') celsius = (val - 32) * 5 / 9;
+        else if (from === 'K') celsius = val - 273.15;
+
+        if (to === 'C') return celsius;
+        else if (to === 'F') return (celsius * 9 / 5) + 32;
+        else if (to === 'K') return celsius + 273.15;
+      } else {
+        // Linear scale factor logic
+        const data = unitsData[cat].list;
+        const fFactor = data.find(u => u.id === from).factor;
+        const tFactor = data.find(u => u.id === to).factor;
+        // Convert to base unit then to target unit
+        return (val * fFactor) / tFactor;
+      }
+    }
+
+    function formatVal(v) {
+      if (v === 0) return '0';
+      if (Math.abs(v) < 0.00001 || Math.abs(v) > 99999999) {
+        return v.toExponential(4);
+      }
+      return parseFloat(v.toFixed(5)).toLocaleString(undefined, { maximumFractionDigits: 5 });
+    }
+
+    // Tabs / Category switcher handler
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        loadCategory(btn.dataset.cat);
+      });
+    });
+
+    [fromVal, fromUnitSelect, toUnitSelect].forEach(input => {
+      input.addEventListener('input', calculate);
+      input.addEventListener('change', calculate);
+    });
+
+    // Initial load
+    loadCategory('length');
+  </script>
+</body>
+
+</html>

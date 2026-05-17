@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Currency Converter — Live Exchange Rates — DailyNumberTask</title>
+  <meta name="description" content="Convert between global currencies in real-time. Auto-updated exchange rates with full offline caching support. Secure, private, and 100% client-side.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/currency/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Real-Time Currency Converter Online">
+  <meta property="og:description" content="Convert USD, EUR, GBP, INR, and 30+ major world currencies. Works offline with dynamic local caching.">
+  <meta property="og:url" content="https://dailynumbertask.in/currency/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .converter-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .rates-banner {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.15);
+      border-radius: var(--rad-md);
+      padding: 0.75rem 1rem;
+      font-size: var(--sz-xs);
+      font-weight: 500;
+      color: var(--clr-accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .refresh-btn {
+      background: var(--clr-accent);
+      border: none;
+      color: white;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all var(--transition);
+    }
+
+    .refresh-btn:hover {
+      background: #b13e25;
+    }
+
+    .refresh-btn.spin span {
+      display: inline-block;
+      animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Dual Conversion Grid */
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .io-box {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-input, .custom-select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-surface);
+      color: var(--clr-ink);
+      outline: none;
+      transition: all var(--transition);
+    }
+
+    .custom-input:focus, .custom-select:focus {
+      border-color: var(--clr-accent);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    /* Popular currency comparison list */
+    .comparison-section {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.75rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .comp-card {
+      background: var(--clr-surface);
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: all var(--transition);
+    }
+
+    .comp-card:hover {
+      border-color: var(--clr-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .comp-value {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: var(--sz-md);
+      font-weight: 700;
+      color: var(--clr-ink);
+      word-break: break-all;
+      margin-bottom: 0.25rem;
+    }
+
+    .comp-label {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Currency Converter introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Currency Converter</span>
+        </nav>
+        <h1>Currency Converter</h1>
+        <p class="lead">Convert between 30+ major world currencies instantly with real-time exchange rates. Dynamic caching guarantees seamless calculation even while offline.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="converter-card">
+          <!-- Update banner -->
+          <div class="rates-banner">
+            <span id="updateText">⌛ Loading currency rates...</span>
+            <button class="refresh-btn" id="refreshBtn"><span>🔄</span> Refresh Rates</button>
+          </div>
+
+          <!-- Dual Conversion Grid -->
+          <div class="io-grid">
+            <!-- From Box -->
+            <div class="io-box">
+              <div class="form-group mb-2">
+                <label for="fromVal">From Amount</label>
+                <input type="number" class="custom-input" id="fromVal" value="100">
+              </div>
+              <div class="form-group">
+                <label for="fromCurr">From Currency</label>
+                <select class="custom-select" id="fromCurr">
+                  <!-- Filled dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <!-- To Box -->
+            <div class="io-box">
+              <div class="form-group mb-2">
+                <label for="toVal">To Amount</label>
+                <input type="text" class="custom-input" id="toVal" readonly style="font-family: monospace; font-weight: 700; color: var(--clr-accent);">
+              </div>
+              <div class="form-group">
+                <label for="toCurr">To Currency</label>
+                <select class="custom-select" id="toCurr">
+                  <!-- Filled dynamically -->
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cross Rates comparison grid -->
+          <div class="comparison-section">
+            <h3 style="font-size: var(--sz-md); font-family: var(--font-body); font-weight: 600; margin-bottom: 0.5rem;">
+              📈 Major Currency Cross Rates
+            </h3>
+            <p class="text-muted" style="font-size: var(--sz-xs); margin-bottom: 1.25rem;">Value of 1 Unit of your selected "From" Currency across standard global indices:</p>
+            
+            <div class="comparison-grid" id="crossGrid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Using the Live Currency Converter</h2>
+          <p>Global exchange rates (Forex) change continuously due to interest rates, inflation, trade flows, and macroeconomic conditions. This currency converter helps you quickly convert amounts for over 30 top currencies, including USD, EUR, GBP, INR, JPY, and CAD.</p>
+          <h3>How Offline Caching Works</h3>
+          <p>Unlike standard converters that fail completely when you lose network connectivity, this tool is designed for reliability. Rates are fetched once and saved locally in your browser's <code>localStorage</code> cache. When offline, the tool automatically uses these stored rates, ensuring you can still perform calculations during flights, commutes, or in areas with poor internet connection.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('currency');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const fromValInput = document.getElementById('fromVal');
+    const toValInput = document.getElementById('toVal');
+    const fromCurrSelect = document.getElementById('fromCurr');
+    const toCurrSelect = document.getElementById('toCurr');
+    
+    const updateText = document.getElementById('updateText');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const crossGrid = document.getElementById('crossGrid');
+
+    const topCurrencies = [
+      { code: 'USD', name: 'US Dollar ($)' },
+      { code: 'EUR', name: 'Euro (€)' },
+      { code: 'GBP', name: 'British Pound (£)' },
+      { code: 'INR', name: 'Indian Rupee (₹)' },
+      { code: 'JPY', name: 'Japanese Yen (¥)' },
+      { code: 'CAD', name: 'Canadian Dollar (C$)' },
+      { code: 'AUD', name: 'Australian Dollar (A$)' },
+      { code: 'CHF', name: 'Swiss Franc (CHF)' },
+      { code: 'CNY', name: 'Chinese Yuan (¥)' },
+      { code: 'SGD', name: 'Singapore Dollar (S$)' },
+      { code: 'NZD', name: 'New Zealand Dollar (NZ$)' },
+      { code: 'HKD', name: 'Hong Kong Dollar (HK$)' },
+      { code: 'AED', name: 'UAE Dirham (AED)' },
+      { code: 'SAR', name: 'Saudi Riyal (SAR)' },
+      { code: 'ZAR', name: 'South African Rand (R)' },
+      { code: 'BRL', name: 'Brazilian Real (R$)' },
+      { code: 'MXN', name: 'Mexican Peso ($)' },
+      { code: 'RUB', name: 'Russian Ruble (₽)' },
+      { code: 'KRW', name: 'South Korean Won (₩)' },
+      { code: 'MYR', name: 'Malaysian Ringgit (RM)' },
+      { code: 'THB', name: 'Thai Baht (฿)' }
+    ];
+
+    let exchangeRates = {};
+
+    function populateSelects() {
+      const options = topCurrencies.map(c => `<option value="${c.code}">${c.code} - ${c.name}</option>`).join('');
+      fromCurrSelect.innerHTML = options;
+      toCurrSelect.innerHTML = options;
+
+      fromCurrSelect.value = 'USD';
+      toCurrSelect.value = 'INR';
+    }
+
+    async function fetchRates(force = false) {
+      refreshBtn.classList.add('spin');
+      
+      const cachedRates = localStorage.getItem('dnt_currency_rates');
+      const cachedTime = localStorage.getItem('dnt_currency_time');
+      
+      const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours caching duration
+      
+      if (!force && cachedRates && cachedTime && (Date.now() - parseInt(cachedTime) < cacheDuration)) {
+        exchangeRates = JSON.parse(cachedRates);
+        renderRatesStatus(new Date(parseInt(cachedTime)));
+        calculate();
+        refreshBtn.classList.remove('spin');
+        return;
+      }
+
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (!res.ok) throw new Error('API failure');
+        
+        const data = await res.json();
+        exchangeRates = data.rates;
+        
+        localStorage.setItem('dnt_currency_rates', JSON.stringify(exchangeRates));
+        localStorage.setItem('dnt_currency_time', Date.now().toString());
+
+        renderRatesStatus(new Date());
+        calculate();
+        showToast('Exchange rates updated successfully!', 'success');
+      } catch (err) {
+        if (cachedRates) {
+          exchangeRates = JSON.parse(cachedRates);
+          renderRatesStatus(new Date(parseInt(cachedTime)), true);
+          calculate();
+          showToast('Failed to fetch new rates, using offline cache.', 'error');
+        } else {
+          updateText.textContent = '❌ Offline & no cached rates available.';
+          showToast('Failed to connect to currency rates API.', 'error');
+        }
+      }
+      refreshBtn.classList.remove('spin');
+    }
+
+    function renderRatesStatus(date, isFallback = false) {
+      const timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+      const dateStr = date.toLocaleDateString();
+      updateText.textContent = `⚡ Rates updated: ${dateStr} ${timeStr}${isFallback ? ' (Cached)' : ''}`;
+    }
+
+    function calculate() {
+      const val = parseFloat(fromValInput.value);
+      if (isNaN(val) || !exchangeRates[fromCurrSelect.value]) {
+        toValInput.value = '';
+        crossGrid.innerHTML = '';
+        return;
+      }
+
+      const fromCode = fromCurrSelect.value;
+      const toCode = toCurrSelect.value;
+
+      // USD is standard base unit from er-api
+      // Convert to USD then to target currency
+      const valInUSD = val / exchangeRates[fromCode];
+      const convertedVal = valInUSD * exchangeRates[toCode];
+
+      toValInput.value = convertedVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      // Render Cross Rates (1 unit of From currency vs top major indices)
+      const majorIndices = ['USD', 'EUR', 'GBP', 'INR', 'JPY', 'CAD', 'AUD'];
+      crossGrid.innerHTML = majorIndices.map(curr => {
+        const rate = (1 / exchangeRates[fromCode]) * exchangeRates[curr];
+        return `
+        <div class="comp-card">
+          <div class="comp-value">${rate.toLocaleString(undefined, { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
+          <div class="comp-label">${curr}</div>
+        </div>`;
+      }).join('');
+    }
+
+    // Interactive Handlers
+    [fromValInput, fromCurrSelect, toCurrSelect].forEach(input => {
+      input.addEventListener('input', calculate);
+      input.addEventListener('change', calculate);
+    });
+
+    refreshBtn.addEventListener('click', () => fetchRates(true));
+
+    // Boot
+    populateSelects();
+    fetchRates();
+  </script>
+</body>
+
+</html>

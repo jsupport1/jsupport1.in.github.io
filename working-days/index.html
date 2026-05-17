@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working Days Calculator — Business Days Between Dates — DailyNumberTask</title>
+  <meta name="description"
+    content="Calculate the number of working days or business days between two dates. Exclude custom holidays and weekends. Perfect for project planning and corporate payroll.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/working-days/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Working Days & Business Days Calculator">
+  <meta property="og:description" content="Find the total work days between dates, customizing active weekend days and holiday exclusions. Highly interactive.">
+  <meta property="og:url" content="https://dailynumbertask.in/working-days/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .workday-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .date-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .date-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-date-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      transition: all var(--transition);
+    }
+
+    .custom-date-input:focus {
+      outline: none;
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    /* Weekday checkbox selector */
+    .weekdays-selector-wrap {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .weekdays-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .day-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--rad-sm);
+      font-size: var(--sz-sm);
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--transition);
+    }
+
+    .day-checkbox:hover {
+      border-color: var(--clr-accent);
+    }
+
+    .day-checkbox input {
+      accent-color: var(--clr-accent);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    /* Holiday input list */
+    .holiday-input-wrap {
+      margin-bottom: 2rem;
+    }
+
+    .holiday-list-box {
+      width: 100%;
+      min-height: 80px;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      background: var(--clr-surface);
+      font-size: var(--sz-sm);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      resize: vertical;
+      color: var(--clr-ink);
+      line-height: 1.6;
+    }
+
+    /* Beautiful visual breakdown progress bar */
+    .breakdown-progress-container {
+      margin: 2rem 0;
+    }
+
+    .breakdown-bar {
+      display: flex;
+      height: 24px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+      background: var(--clr-surface2);
+      margin-bottom: 1rem;
+    }
+
+    .bar-segment {
+      height: 100%;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .bar-workdays { background: var(--clr-success); }
+    .bar-weekends { background: var(--clr-accent); }
+    .bar-holidays { background: #FFD275; }
+
+    .bar-legend {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      font-size: var(--sz-sm);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+    }
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .workday-result-banner {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.25);
+      border-radius: var(--rad-lg);
+      padding: 1.75rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .workday-primary-value {
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      color: var(--clr-accent);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .workday-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--sz-lg);
+      color: var(--clr-ink-2);
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Working Days Calculator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Working Days Calculator</span>
+        </nav>
+        <h1>Working Days Calculator</h1>
+        <p class="lead">Determine the exact number of active business days or working days between dates. Customize your active work week and holiday schedule seamlessly.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="workday-card">
+          <!-- Inputs -->
+          <div class="date-grid">
+            <div class="form-group">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="custom-date-input" id="startDate">
+            </div>
+            <div class="form-group">
+              <label for="endDate">End Date</label>
+              <input type="date" class="custom-date-input" id="endDate">
+            </div>
+          </div>
+
+          <!-- Weekday checkboxes -->
+          <div class="weekdays-selector-wrap">
+            <label class="form-label" style="font-weight: 600; color: var(--clr-ink); font-size: var(--sz-sm);">Active Work Days</label>
+            <div class="weekdays-grid">
+              <label class="day-checkbox"><input type="checkbox" id="mon" checked> Mon</label>
+              <label class="day-checkbox"><input type="checkbox" id="tue" checked> Tue</label>
+              <label class="day-checkbox"><input type="checkbox" id="wed" checked> Wed</label>
+              <label class="day-checkbox"><input type="checkbox" id="thu" checked> Thu</label>
+              <label class="day-checkbox"><input type="checkbox" id="fri" checked> Fri</label>
+              <label class="day-checkbox"><input type="checkbox" id="sat"> Sat</label>
+              <label class="day-checkbox"><input type="checkbox" id="sun"> Sun</label>
+            </div>
+          </div>
+
+          <!-- Holidays Input -->
+          <div class="holiday-input-wrap">
+            <label class="form-label mb-1" for="holidayList" style="font-weight: 600; color: var(--clr-ink); font-size: var(--sz-sm);">
+              Exclude Holiday Dates (one per line, e.g. YYYY-MM-DD)
+            </label>
+            <textarea class="holiday-list-box" id="holidayList" placeholder="e.g.&#10;2026-12-25&#10;2026-01-01"></textarea>
+          </div>
+
+          <!-- Actions -->
+          <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+            <button class="btn btn--primary btn--lg" id="calculateBtn" style="flex: 1; justify-content: center;">
+              <span>💼</span> Calculate Work Days
+            </button>
+            <button class="btn btn--ghost btn--lg" id="resetBtn" title="Reset fields">✕ Reset</button>
+          </div>
+
+          <!-- Results Mount -->
+          <div id="resultContainer" style="display: none;">
+            <div class="workday-result-banner">
+              <div class="workday-primary-value" id="valWorkdays">-- Work Days</div>
+              <div class="workday-subtitle" id="valTotalDays">Out of -- Calendar Days</div>
+            </div>
+
+            <!-- Beautiful Visual Breakdown bar -->
+            <div class="breakdown-progress-container">
+              <div class="breakdown-bar">
+                <div class="bar-segment bar-workdays" id="segWorkdays" style="width: 0%"></div>
+                <div class="bar-segment bar-weekends" id="segWeekends" style="width: 0%"></div>
+                <div class="bar-segment bar-holidays" id="segHolidays" style="width: 0%"></div>
+              </div>
+
+              <div class="bar-legend">
+                <div class="legend-item">
+                  <span class="legend-color bar-workdays"></span>
+                  <span id="lblWorkdays">Working Days: --</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color bar-weekends"></span>
+                  <span id="lblWeekends">Weekend Days: --</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-color bar-holidays"></span>
+                  <span id="lblHolidays">Excluded Holidays: --</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>How Business Days are Calculated</h2>
+          <p>Calculating business days or working days is standard across corporate payroll, operations, legal execution windows, and financial institutions. It enables project managers to plan precise timelines without accounting for non-operational days.</p>
+          <h3>Active Work Week Configurations</h3>
+          <p>While a standard corporate week spans Monday to Friday, many global industries run on 6-day models or other shifts (e.g. in retail, production, hospitality, or healthcare). By checking or unchecking specific weekdays, you can tailor this calculator to represent any operational schedule exactly, ensuring 100% accurate results.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('working-days');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    const holidayInput = document.getElementById('holidayList');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultContainer = document.getElementById('resultContainer');
+
+    // Default dates: today and 30 days later
+    const today = new Date();
+    const futureDate = new Date();
+    futureDate.setDate(today.getDate() + 30);
+
+    startInput.value = today.toISOString().split('T')[0];
+    endInput.value = futureDate.toISOString().split('T')[0];
+
+    // Exclude default Christmas and New Year as sample holidays for current year
+    const y = today.getFullYear();
+    holidayInput.value = `${y}-12-25\n${y + 1}-01-01`;
+
+    function calculateWorkDays() {
+      const startVal = startInput.value;
+      const endVal = endInput.value;
+
+      if (!startVal || !endVal) {
+        showToast('Please enter both dates.', 'error');
+        return;
+      }
+
+      const dStart = new Date(startVal + 'T00:00:00');
+      const dEnd = new Date(endVal + 'T00:00:00');
+
+      if (dEnd < dStart) {
+        showToast('End date cannot be earlier than start date!', 'error');
+        resultContainer.style.display = 'none';
+        return;
+      }
+
+      // Parse custom holidays list
+      const holidayLines = holidayInput.value.split('\n');
+      const holidaySet = new Set();
+      holidayLines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed) {
+          // Parse as date in local timezone to avoid off-by-one errors
+          const parsed = new Date(trimmed + 'T00:00:00');
+          if (!isNaN(parsed)) {
+            holidaySet.add(parsed.getTime());
+          }
+        }
+      });
+
+      // Get weekday config
+      const activeDays = {
+        0: document.getElementById('sun').checked,
+        1: document.getElementById('mon').checked,
+        2: document.getElementById('tue').checked,
+        3: document.getElementById('wed').checked,
+        4: document.getElementById('thu').checked,
+        5: document.getElementById('fri').checked,
+        6: document.getElementById('sat').checked
+      };
+
+      // Loop days
+      let current = new Date(dStart);
+      let totalDays = 0;
+      let workingDays = 0;
+      let weekendDays = 0;
+      let holidayDays = 0;
+
+      while (current <= dEnd) {
+        totalDays++;
+        const timeVal = current.getTime();
+        const dayOfWeek = current.getDay();
+
+        if (holidaySet.has(timeVal)) {
+          holidayDays++;
+        } else if (!activeDays[dayOfWeek]) {
+          weekendDays++;
+        } else {
+          workingDays++;
+        }
+
+        // Advance 1 day
+        current.setDate(current.getDate() + 1);
+      }
+
+      // Update primary text
+      document.getElementById('valWorkdays').textContent = `${workingDays.toLocaleString()} Work Day${workingDays !== 1 ? 's' : ''}`;
+      document.getElementById('valTotalDays').textContent = `Out of ${totalDays.toLocaleString()} Calendar Days`;
+
+      // Update visual bar segments
+      const pctWork = (workingDays / totalDays) * 100;
+      const pctWeek = (weekendDays / totalDays) * 100;
+      const pctHol = (holidayDays / totalDays) * 100;
+
+      document.getElementById('segWorkdays').style.width = `${pctWork}%`;
+      document.getElementById('segWeekends').style.width = `${pctWeek}%`;
+      document.getElementById('segHolidays').style.width = `${pctHol}%`;
+
+      // Update legend labels
+      document.getElementById('lblWorkdays').textContent = `Working Days: ${workingDays} (${pctWork.toFixed(0)}%)`;
+      document.getElementById('lblWeekends').textContent = `Non-Work Days: ${weekendDays} (${pctWeek.toFixed(0)}%)`;
+      document.getElementById('lblHolidays').textContent = `Excluded Holidays: ${holidayDays} (${pctHol.toFixed(0)}%)`;
+
+      resultContainer.style.display = 'block';
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    calculateBtn.addEventListener('click', calculateWorkDays);
+    resetBtn.addEventListener('click', () => {
+      startInput.value = today.toISOString().split('T')[0];
+      endInput.value = futureDate.toISOString().split('T')[0];
+      holidayInput.value = `${y}-12-25\n${y + 1}-01-01`;
+      document.getElementById('mon').checked = true;
+      document.getElementById('tue').checked = true;
+      document.getElementById('wed').checked = true;
+      document.getElementById('thu').checked = true;
+      document.getElementById('fri').checked = true;
+      document.getElementById('sat').checked = false;
+      document.getElementById('sun').checked = false;
+      resultContainer.style.display = 'none';
+      showToast('Calculator has been reset.', 'success');
+    });
+
+    // Run initially
+    calculateWorkDays();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator — Calculate Exact Age & Next Birthday — DailyNumberTask</title>
+  <meta name="description"
+    content="Calculate your exact age in years, months, weeks, days, hours, and seconds. Find the remaining days, hours, and minutes until your next birthday. 100% free and private.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/age-calculator/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph / SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Age Calculator — Calculate Exact Age Online">
+  <meta property="og:description" content="Instantly find your age in years, months, days, and seconds. See your next birthday countdown. Private and client-side.">
+  <meta property="og:url" content="https://dailynumbertask.in/age-calculator/index.html">
+  
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    /* Custom premium styling for Date & Time tools */
+    .date-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .date-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .date-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-date-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      transition: all var(--transition);
+    }
+
+    .custom-date-input:focus {
+      outline: none;
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    .age-summary-box {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.25);
+      border-radius: var(--rad-lg);
+      padding: 1.75rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .age-primary-text {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      color: var(--clr-accent);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .stats-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .stats-card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .stats-card-grid > *:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .stat-mini-card {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .stat-mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+      border-color: rgba(200,75,47,0.15);
+    }
+
+    .stat-mini-value {
+      font-family: var(--font-display);
+      font-size: var(--sz-2xl);
+      color: var(--clr-ink);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-mini-label {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .birthday-banner {
+      background: var(--clr-success-bg);
+      border: 1px solid rgba(45,122,79,0.2);
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .birthday-icon {
+      font-size: 2.25rem;
+      animation: pulse 2s infinite;
+    }
+
+    .birthday-details {
+      flex: 1;
+    }
+
+    .birthday-title {
+      font-family: var(--font-display);
+      font-size: var(--sz-lg);
+      color: var(--clr-success);
+      margin-bottom: 0.25rem;
+    }
+
+    .birthday-desc {
+      font-size: var(--sz-sm);
+      color: var(--clr-ink-2);
+    }
+
+    .detailed-breakdown {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.5rem;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--clr-surface2);
+      font-size: var(--sz-sm);
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-label {
+      color: var(--clr-ink-2);
+    }
+
+    .breakdown-val {
+      font-weight: 600;
+      color: var(--clr-ink);
+      font-family: monospace;
+      font-size: var(--sz-md);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Age Calculator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Age Calculator</span>
+        </nav>
+        <h1>Age Calculator</h1>
+        <p class="lead">Determine your exact age in years, months, weeks, days, hours, and seconds. Discover the exact time remaining until your next birthday celebration.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="date-card">
+          <div class="date-grid">
+            <div class="form-group">
+              <label for="birthDate">Date of Birth</label>
+              <input type="date" class="custom-date-input" id="birthDate" value="1995-01-01" max="2099-12-31">
+            </div>
+            <div class="form-group">
+              <label for="targetDate">Age at the Date of</label>
+              <input type="date" class="custom-date-input" id="targetDate">
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+            <button class="btn btn--primary btn--lg" id="calculateBtn" style="flex: 1; justify-content: center;">
+              <span>🎂</span> Calculate Age
+            </button>
+            <button class="btn btn--ghost btn--lg" id="resetBtn" title="Reset fields">✕ Reset</button>
+          </div>
+
+          <!-- Result Mount -->
+          <div id="resultContainer" style="display: none;">
+            <div class="age-summary-box">
+              <div class="age-primary-text" id="summaryAge">-- Years, -- Months, -- Days</div>
+              <p class="text-muted" style="margin: 0;">Is your exact chronological age</p>
+            </div>
+
+            <!-- Mini stats grid -->
+            <div class="stats-card-grid">
+              <div class="stat-mini-card">
+                <div class="stat-mini-value" id="statMonths">--</div>
+                <div class="stat-mini-label">Total Months</div>
+              </div>
+              <div class="stat-mini-card">
+                <div class="stat-mini-value" id="statWeeks">--</div>
+                <div class="stat-mini-label">Total Weeks</div>
+              </div>
+              <div class="stat-mini-card">
+                <div class="stat-mini-value" id="statDays">--</div>
+                <div class="stat-mini-label">Total Days</div>
+              </div>
+            </div>
+
+            <!-- Birthday Countdown Banner -->
+            <div class="birthday-banner" id="birthdayBanner">
+              <div class="birthday-icon">🎉</div>
+              <div class="birthday-details">
+                <div class="birthday-title" id="birthdayTitle">-- Months & -- Days Left</div>
+                <div class="birthday-desc" id="birthdayDesc">For your next birthday, which will fall on a --.</div>
+              </div>
+            </div>
+
+            <!-- Detailed Breakdown -->
+            <div class="detailed-breakdown">
+              <h3 style="font-size: var(--sz-md); margin-bottom: 1rem; font-family: var(--font-body); font-weight: 600;">Time Metrics Breakdown</h3>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Total Hours</span>
+                <span class="breakdown-val" id="valHours">--</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Total Minutes</span>
+                <span class="breakdown-val" id="valMinutes">--</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Total Seconds</span>
+                <span class="breakdown-val" id="valSeconds">--</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Leap Years Passed</span>
+                <span class="breakdown-val" id="valLeapYears">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>How Age is Calculated</h2>
+          <p>This age calculator computes age on three standard chronological dimensions: years, months, and days. It handles leap years correctly (e.g. accounting for the extra day in February during leap years) to provide a 100% precise time metrics breakdown.</p>
+          <h3>Chronological Age vs. Calendar System</h3>
+          <p>Standard calendar systems count age based on actual calendar days rather than exact astronomical years. This means if you are born on February 29th, your age will only increment on February 29th in leap years, or on March 1st in non-leap years. This tool fully adheres to standard legal chronological age computation rules used in the US, India, UK, and European agencies.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('age-calculator');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    // Set today as default target date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('targetDate').value = today;
+
+    const birthInput = document.getElementById('birthDate');
+    const targetInput = document.getElementById('targetDate');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultContainer = document.getElementById('resultContainer');
+
+    function calculateAge() {
+      const birthVal = birthInput.value;
+      const targetVal = targetInput.value;
+
+      if (!birthVal || !targetVal) {
+        showToast('Please enter both dates.', 'error');
+        return;
+      }
+
+      const birthDate = new Date(birthVal + 'T00:00:00');
+      const targetDate = new Date(targetVal + 'T00:00:00');
+
+      if (targetDate < birthDate) {
+        showToast('Target date cannot be earlier than birth date!', 'error');
+        resultContainer.style.display = 'none';
+        return;
+      }
+
+      // Calculate exact difference in years, months, days
+      let years = targetDate.getFullYear() - birthDate.getFullYear();
+      let months = targetDate.getMonth() - birthDate.getMonth();
+      let days = targetDate.getDate() - birthDate.getDate();
+
+      if (days < 0) {
+        months--;
+        // Get number of days in birth month
+        const prevMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      // Update UI Primary Age
+      let summaryText = '';
+      if (years === 0 && months === 0 && days === 0) {
+        summaryText = '0 Days (Just Born! 🎉)';
+      } else {
+        const parts = [];
+        if (years > 0) parts.push(`${years} Year${years !== 1 ? 's' : ''}`);
+        if (months > 0) parts.push(`${months} Month${months !== 1 ? 's' : ''}`);
+        if (days > 0) parts.push(`${days} Day${days !== 1 ? 's' : ''}`);
+        summaryText = parts.join(', ');
+      }
+      document.getElementById('summaryAge').textContent = summaryText;
+
+      // Total metrics
+      const diffMs = targetDate.getTime() - birthDate.getTime();
+      const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const totalMonths = (years * 12) + months;
+      const totalWeeks = Math.floor(totalDays / 7);
+      
+      const totalHours = totalDays * 24;
+      const totalMinutes = totalHours * 60;
+      const totalSeconds = totalMinutes * 60;
+
+      // Leap years passed
+      let leapYears = 0;
+      for (let y = birthDate.getFullYear(); y <= targetDate.getFullYear(); y++) {
+        if ((y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0)) {
+          leapYears++;
+        }
+      }
+
+      // Update Sub-Stats
+      document.getElementById('statMonths').textContent = totalMonths.toLocaleString();
+      document.getElementById('statWeeks').textContent = totalWeeks.toLocaleString();
+      document.getElementById('statDays').textContent = totalDays.toLocaleString();
+
+      document.getElementById('valHours').textContent = totalHours.toLocaleString();
+      document.getElementById('valMinutes').textContent = totalMinutes.toLocaleString();
+      document.getElementById('valSeconds').textContent = totalSeconds.toLocaleString();
+      document.getElementById('valLeapYears').textContent = leapYears.toLocaleString();
+
+      // Next Birthday Countdown
+      let nextBday = new Date(targetDate.getFullYear(), birthDate.getMonth(), birthDate.getDate());
+      if (nextBday < targetDate) {
+        nextBday.setFullYear(targetDate.getFullYear() + 1);
+      }
+
+      let bMonths = nextBday.getMonth() - targetDate.getMonth();
+      let bDays = nextBday.getDate() - targetDate.getDate();
+
+      if (bDays < 0) {
+        bMonths--;
+        const prevMonth = new Date(nextBday.getFullYear(), nextBday.getMonth(), 0);
+        bDays += prevMonth.getDate();
+      }
+
+      if (bMonths < 0) {
+        bMonths += 12;
+      }
+
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const nextBdayDay = daysOfWeek[nextBday.getDay()];
+
+      const bdayTitleEl = document.getElementById('birthdayTitle');
+      const bdayDescEl = document.getElementById('birthdayDesc');
+
+      if (bMonths === 0 && bDays === 0) {
+        bdayTitleEl.textContent = 'Happy Birthday! 🎂';
+        bdayDescEl.textContent = 'Today is your special day!';
+      } else {
+        const nextParts = [];
+        if (bMonths > 0) nextParts.push(`${bMonths} Month${bMonths !== 1 ? 's' : ''}`);
+        if (bDays > 0) nextParts.push(`${bDays} Day${bDays !== 1 ? 's' : ''}`);
+        bdayTitleEl.textContent = nextParts.join(' & ') + ' Left';
+        bdayDescEl.textContent = `Your next birthday will be on a ${nextBdayDay}.`;
+      }
+
+      resultContainer.style.display = 'block';
+      // Smooth scroll to results
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    calculateBtn.addEventListener('click', calculateAge);
+    resetBtn.addEventListener('click', () => {
+      birthInput.value = '1995-01-01';
+      targetInput.value = today;
+      resultContainer.style.display = 'none';
+      showToast('Calculator has been reset.', 'success');
+    });
+
+    // Auto-calculate on initial page load
+    calculateAge();
+  </script>
+</body>
+
+</html>

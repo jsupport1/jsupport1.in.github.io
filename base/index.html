@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Number Base Converter — Binary, Octal, Hex, custom radix — DailyNumberTask</title>
+  <meta name="description"
+    content="Convert numbers between Binary, Octal, Decimal, Hexadecimal, and any custom base radix (2 to 36) in real-time. Built-in character validation and 100% offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/base/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="All-Radix Number Base Converter">
+  <meta property="og:description" content="Instantly convert between Binary, Octal, Hex, and custom bases. Includes real-time character validation.">
+  <meta property="og:url" content="https://dailynumbertask.in/base/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .converter-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    /* Dual Conversion Grid */
+    .io-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .io-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .io-box {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-input, .custom-select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-surface);
+      color: var(--clr-ink);
+      outline: none;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+
+    .custom-input:focus, .custom-select:focus {
+      border-color: var(--clr-accent);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    .custom-input.invalid {
+      border-color: #FF3333;
+      background: rgba(255,51,51,0.02);
+    }
+
+    .validation-err {
+      color: #FF3333;
+      font-size: var(--sz-xs);
+      font-weight: 600;
+      margin-top: 0.4rem;
+      display: none;
+    }
+
+    /* Custom Radix input fields */
+    .radix-field {
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    /* Base Comparison list */
+    .comparison-section {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.75rem;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .comp-card {
+      background: var(--clr-surface);
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      padding: 1.25rem 1rem;
+      transition: all var(--transition);
+      position: relative;
+    }
+
+    .comp-card:hover {
+      border-color: var(--clr-accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .comp-value {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: var(--sz-md);
+      font-weight: 700;
+      color: var(--clr-ink);
+      word-break: break-all;
+      margin-bottom: 0.25rem;
+      padding-right: 2rem;
+    }
+
+    .comp-label {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .comp-copy {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: var(--sz-sm);
+      opacity: 0.5;
+      transition: opacity var(--transition);
+    }
+
+    .comp-copy:hover {
+      opacity: 1;
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Number Base Converter introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Base Converter</span>
+        </nav>
+        <h1>Number Base Converter</h1>
+        <p class="lead">Convert digits dynamically between Binary, Octal, Decimal, Hexadecimal, and custom bases. Automatic character checks block invalid input ranges.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="converter-card">
+          <!-- Dual Conversion Grid -->
+          <div class="io-grid">
+            <!-- From Box -->
+            <div class="io-box">
+              <div class="form-group mb-2">
+                <label for="fromVal">From Value</label>
+                <input type="text" class="custom-input" id="fromVal" value="42" style="font-family: monospace; font-weight: 700;">
+                <div class="validation-err" id="valErr">❌ Character is invalid for this active base!</div>
+              </div>
+              <div class="form-group">
+                <label for="fromBase">From Base</label>
+                <select class="custom-select" id="fromBase">
+                  <option value="10">Decimal (Base 10)</option>
+                  <option value="2">Binary (Base 2)</option>
+                  <option value="8">Octal (Base 8)</option>
+                  <option value="16">Hexadecimal (Base 16)</option>
+                  <option value="custom">Custom Radix...</option>
+                </select>
+                <div class="radix-field" id="fromRadixField">
+                  <label for="fromRadixVal">Radix (2-36)</label>
+                  <input type="number" class="custom-input" id="fromRadixVal" min="2" max="36" value="10">
+                </div>
+              </div>
+            </div>
+
+            <!-- To Box -->
+            <div class="io-box">
+              <div class="form-group mb-2">
+                <label for="toVal">To Value</label>
+                <input type="text" class="custom-input" id="toVal" readonly style="font-family: monospace; font-weight: 700; color: var(--clr-accent);">
+              </div>
+              <div class="form-group">
+                <label for="toBase">To Base</label>
+                <select class="custom-select" id="toBase">
+                  <option value="2">Binary (Base 2)</option>
+                  <option value="8">Octal (Base 8)</option>
+                  <option value="10">Decimal (Base 10)</option>
+                  <option value="16">Hexadecimal (Base 16)</option>
+                  <option value="custom">Custom Radix...</option>
+                </select>
+                <div class="radix-field" id="toRadixField">
+                  <label for="toRadixVal">Radix (2-36)</label>
+                  <input type="number" class="custom-input" id="toRadixVal" min="2" max="36" value="2">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Base Matrix list -->
+          <div class="comparison-section">
+            <h3 style="font-size: var(--sz-md); font-family: var(--font-body); font-weight: 600; margin-bottom: 0.5rem;">
+              💻 Full Representation Grid
+            </h3>
+            <p class="text-muted" style="font-size: var(--sz-xs); margin-bottom: 1.25rem;">Representations of this number mapped dynamically to common computational bases:</p>
+            
+            <div class="comparison-grid" id="matrixGrid">
+              <!-- JS builds this -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Understanding Radix & Number Systems</h2>
+          <p>A number system base (or radix) dictates how many distinct digit characters represent amounts. Decimal uses ten numbers (0-9). Binary uses two symbols (0 and 1). Hexadecimal uses sixteen characters (0-9 and A-F).</p>
+          <h3>Character Range Checking</h3>
+          <p>When dealing with developer calculations, inserting invalid base characters (e.g. entering the letter `F` inside a Binary input) triggers calculation exceptions. This tool validates inputs on-the-fly, instantly letting you know if a character violates the selected radix boundaries.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('base');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const fromValInput = document.getElementById('fromVal');
+    const toValInput = document.getElementById('toVal');
+    const fromBaseSelect = document.getElementById('fromBase');
+    const toBaseSelect = document.getElementById('toBase');
+
+    const fromRadixField = document.getElementById('fromRadixField');
+    const toRadixField = document.getElementById('toRadixField');
+    const fromRadixVal = document.getElementById('fromRadixVal');
+    const toRadixVal = document.getElementById('toRadixVal');
+    
+    const valErr = document.getElementById('valErr');
+    const matrixGrid = document.getElementById('matrixGrid');
+
+    function getRadix(select, customField) {
+      if (select.value === 'custom') {
+        let r = parseInt(customField.value);
+        if (isNaN(r) || r < 2) r = 2;
+        if (r > 36) r = 36;
+        return r;
+      }
+      return parseInt(select.value);
+    }
+
+    function isValidForRadix(str, radix) {
+      if (!str) return true;
+      
+      // Build char validation regex
+      // Base 2: [0-1], Base 10: [0-9], Base 16: [0-9a-fA-F], etc.
+      let alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+      let allowedChars = alphabet.substring(0, radix);
+      
+      // Allow optional negative sign
+      let regexStr = '^[-]?[' + allowedChars + ']*$';
+      let regex = new RegExp(regexStr, 'i');
+      
+      return regex.test(str);
+    }
+
+    function calculate() {
+      const val = fromValInput.value.trim();
+      const fRadix = getRadix(fromBaseSelect, fromRadixVal);
+      const tRadix = getRadix(toBaseSelect, toRadixVal);
+
+      // Visibility of custom radix fields
+      fromRadixField.style.display = fromBaseSelect.value === 'custom' ? 'block' : 'none';
+      toRadixField.style.display = toBaseSelect.value === 'custom' ? 'block' : 'none';
+
+      if (!val) {
+        toValInput.value = '';
+        valErr.style.display = 'none';
+        fromValInput.classList.remove('invalid');
+        matrixGrid.innerHTML = '';
+        return;
+      }
+
+      if (!isValidForRadix(val, fRadix)) {
+        valErr.style.display = 'block';
+        fromValInput.classList.add('invalid');
+        toValInput.value = 'Invalid Input';
+        matrixGrid.innerHTML = '';
+        return;
+      }
+
+      valErr.style.display = 'none';
+      fromValInput.classList.remove('invalid');
+
+      try {
+        // Parse from source base
+        let decimalVal = 0;
+        // Hex logic support with minus signs
+        let isNegative = val.startsWith('-');
+        let cleanVal = isNegative ? val.substring(1) : val;
+
+        decimalVal = parseInt(cleanVal, fRadix);
+        if (isNaN(decimalVal)) throw new Error('NaN');
+
+        if (isNegative) decimalVal = -decimalVal;
+
+        // Convert to target base
+        let result = '';
+        if (decimalVal < 0) {
+          result = '-' + Math.abs(decimalVal).toString(tRadix);
+        } else {
+          result = decimalVal.toString(tRadix);
+        }
+
+        toValInput.value = result.toUpperCase();
+
+        // Render Matrix Representation Grid (Decimal, Hex, Octal, Binary)
+        const commonBases = [
+          { name: 'Decimal (10)', r: 10 },
+          { name: 'Hexadecimal (16)', r: 16 },
+          { name: 'Octal (8)', r: 8 },
+          { name: 'Binary (2)', r: 2 }
+        ];
+
+        matrixGrid.innerHTML = commonBases.map(b => {
+          let repr = '';
+          if (decimalVal < 0) {
+            repr = '-' + Math.abs(decimalVal).toString(b.r).toUpperCase();
+          } else {
+            repr = decimalVal.toString(b.r).toUpperCase();
+          }
+
+          return `
+          <div class="comp-card">
+            <div class="comp-value">${repr}</div>
+            <div class="comp-label">${b.name}</div>
+            <button class="comp-copy" onclick="navigator.clipboard.writeText('${repr}'); alert('Copied!');" title="Copy">📋</button>
+          </div>`;
+        }).join('');
+
+      } catch (err) {
+        toValInput.value = 'Parsing Error';
+        matrixGrid.innerHTML = '';
+      }
+    }
+
+    [fromValInput, fromBaseSelect, toBaseSelect, fromRadixVal, toRadixVal].forEach(element => {
+      element.addEventListener('input', calculate);
+      element.addEventListener('change', calculate);
+    });
+
+    // Boot
+    calculate();
+  </script>
+</body>
+
+</html>

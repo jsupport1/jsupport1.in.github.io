@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Time Zone Converter — Convert World Time Online — DailyNumberTask</title>
+  <meta name="description"
+    content="Convert dates and times between different worldwide time zones instantly. Automatically detects your local timezone. Highly visual, free and client-side.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/timezone/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="World Time Zone Converter — Convert Times Worldwide">
+  <meta property="og:description" content="Seamlessly compare dates and times across multiple world zones. Interactive UI with timezone offset displays.">
+  <meta property="og:url" content="https://dailynumbertask.in/timezone/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .timezone-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      transition: all var(--transition);
+    }
+
+    .custom-input:focus {
+      outline: none;
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    .source-panel {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Target timezone grid cards */
+    .zones-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .zones-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .zone-box {
+      background: var(--clr-surface);
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .zone-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--clr-accent);
+      box-shadow: var(--shadow-md);
+    }
+
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .zone-name-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .zone-city {
+      font-family: var(--font-display);
+      font-size: var(--sz-lg);
+      color: var(--clr-ink);
+      font-weight: 600;
+    }
+
+    .zone-code {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      font-weight: 600;
+    }
+
+    .zone-offset-badge {
+      background: var(--clr-accent-bg);
+      color: var(--clr-accent);
+      font-size: var(--sz-xs);
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+
+    .zone-time-display {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: var(--sz-2xl);
+      font-weight: 700;
+      color: var(--clr-ink);
+      line-height: 1.2;
+    }
+
+    .zone-date-display {
+      font-size: var(--sz-sm);
+      color: var(--clr-ink-2);
+      margin-top: 0.25rem;
+    }
+
+    .zone-deco-icon {
+      position: absolute;
+      right: 0.75rem;
+      bottom: 0.5rem;
+      font-size: 2.75rem;
+      opacity: 0.08;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Time Zone Converter introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Time Zone Converter</span>
+        </nav>
+        <h1>Time Zone Converter</h1>
+        <p class="lead">Convert timestamps between worldwide time zones. Input your local date &amp; time to instantly compare offsets across major global hubs.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="timezone-card">
+          <!-- Source Time Panel -->
+          <div class="source-panel">
+            <h3 style="font-size: var(--sz-md); margin-bottom: 1.25rem; font-family: var(--font-body); font-weight: 600; color: var(--clr-accent);">
+              📍 Input Source Time
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div class="form-group">
+                <label for="srcDate">Source Date</label>
+                <input type="date" class="custom-input" id="srcDate">
+              </div>
+              <div class="form-group">
+                <label for="srcTime">Source Time</label>
+                <input type="time" class="custom-input" id="srcTime">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="srcZone">Source Time Zone</label>
+              <select class="select" id="srcZone" style="padding: 0.85rem 2rem 0.85rem 0.85rem; border-radius: var(--rad-md);">
+                <!-- Automatically filled by JS -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Target Conversions -->
+          <h3 style="font-size: var(--sz-lg); font-family: var(--font-display); font-weight: 600; margin-top: 2rem;">
+            🌎 World Conversions
+          </h3>
+
+          <div class="zones-grid" id="conversionsGrid">
+            <!-- Dynamically populated target timezone cards -->
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Understanding Time Zone Offsets</h2>
+          <p>Converting times across time zones can be confusing due to offsets from Coordinated Universal Time (UTC) and daylight saving adjustments. This time zone converter automatically applies correct offsets to ensure precision.</p>
+          <h3>Coordinated Universal Time (UTC) & GMT</h3>
+          <p>UTC is the international time standard used as a reference point for all time zones. Greenwich Mean Time (GMT) is a timezone that aligns perfectly with UTC, but is subject to Daylight Saving Time adjustments (as British Summer Time, BST) during warm months. Using standard timezone data allows this converter to calculate world times seamlessly without manual math errors.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('timezone');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const srcDateInput = document.getElementById('srcDate');
+    const srcTimeInput = document.getElementById('srcTime');
+    const srcZoneSelect = document.getElementById('srcZone');
+    const grid = document.getElementById('conversionsGrid');
+
+    // Populate initial inputs with local current date/time
+    const now = new Date();
+    srcDateInput.value = now.toISOString().split('T')[0];
+    srcTimeInput.value = now.toTimeString().split(' ')[0].substring(0, 5);
+
+    // List of major worldwide timezone locations to compare
+    const timezonesList = [
+      { name: 'UTC / GMT', zone: 'UTC', code: 'UTC', icon: '🌐' },
+      { name: 'London', zone: 'Europe/London', code: 'BST/GMT', icon: '🇬🇧' },
+      { name: 'New York', zone: 'America/New_York', code: 'EDT/EST', icon: '🇺🇸' },
+      { name: 'California', zone: 'America/Los_Angeles', code: 'PDT/PST', icon: '🌉' },
+      { name: 'India', zone: 'Asia/Kolkata', code: 'IST', icon: '🇮🇳' },
+      { name: 'Tokyo', zone: 'Asia/Tokyo', code: 'JST', icon: '🇯🇵' },
+      { name: 'Sydney', zone: 'Australia/Sydney', code: 'AEST/AEDT', icon: '🇦🇺' },
+      { name: 'Dubai', zone: 'Asia/Dubai', code: 'GST', icon: '🕌' },
+      { name: 'Paris / Berlin', zone: 'Europe/Paris', code: 'CEST/CET', icon: '🇪🇺' },
+      { name: 'Singapore', zone: 'Asia/Singapore', code: 'SGT', icon: '🦁' }
+    ];
+
+    // Detect user's timezone and append to selection list
+    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    
+    // Add user zone to selection list
+    let allZones = [...new Set([userTimeZone, 'Asia/Kolkata', 'America/New_York', 'Europe/London', 'UTC', 'America/Los_Angeles'])];
+    srcZoneSelect.innerHTML = allZones.map(z => `<option value="${z}">${z === userTimeZone ? `📍 ${z} (My Local Zone)` : z}</option>`).join('');
+
+    function convertTimes() {
+      const d = srcDateInput.value;
+      const t = srcTimeInput.value;
+      const srcZone = srcZoneSelect.value;
+
+      if (!d || !t) return;
+
+      // Construct source Date in selected Timezone
+      // Using Intl API to do timezone calculations
+      // First let's create absolute timestamp based on source date-time parsed in the source timezone
+      let sourceDateStr = `${d}T${t}:00`;
+      
+      // Let's get the absolute UTC offset for the source date in source timezone to correctly parse it
+      const tempDate = new Date();
+      let parts = [];
+      try {
+        parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: srcZone,
+          year: 'numeric', month: 'numeric', day: 'numeric',
+          hour: 'numeric', minute: 'numeric', second: 'numeric',
+          hour12: false
+        }).formatToParts(tempDate);
+      } catch (e) {
+        // Fallback if zone not supported
+        parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'UTC',
+          year: 'numeric', month: 'numeric', day: 'numeric',
+          hour: 'numeric', minute: 'numeric', second: 'numeric',
+          hour12: false
+        }).formatToParts(tempDate);
+      }
+
+      // Parse absolute timestamp
+      let localDate = new Date(`${d}T${t}:00`);
+      // Since parsing native timezone in vanilla js is hard without moment, we can use standard trick:
+      // Construct a formatter in source timezone and adjust absolute offset
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: srcZone,
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      });
+      
+      // We search for matching absolute time in UTC
+      // A robust cross-timezone parser in client-side vanilla JS:
+      const dateParts = formatter.format(localDate).split(', ');
+      const tParts = dateParts[1] ? dateParts[1].split(':') : [0,0,0];
+      const dParts = dateParts[0].split('/');
+      
+      // Find difference between local date parse and what Intl printed
+      const parsedIntlDate = new Date(dParts[2], dParts[0]-1, dParts[1], tParts[0], tParts[1], tParts[2]);
+      const diffOffsetMs = localDate.getTime() - parsedIntlDate.getTime();
+      const absoluteDate = new Date(localDate.getTime() + diffOffsetMs);
+
+      // Render cards
+      grid.innerHTML = timezonesList.map(target => {
+        let options = {
+          timeZone: target.zone,
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        };
+
+        let targetTime = '';
+        let targetDate = '';
+        let offsetText = '';
+
+        try {
+          targetTime = new Intl.DateTimeFormat('en-US', options).format(absoluteDate);
+          targetDate = new Intl.DateTimeFormat('en-US', {
+            timeZone: target.zone,
+            weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+          }).format(absoluteDate);
+
+          // Get offset difference in hours relative to source
+          const targetFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: target.zone,
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
+          });
+
+          const srcFormatter = new Intl.DateTimeFormat('en-US', {
+            timeZone: srcZone,
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+            hour12: false
+          });
+
+          const parseFormatted = (f, d) => {
+            const dp = f.format(d).split(', ');
+            const tp = dp[1] ? dp[1].split(':') : [0,0,0];
+            const ddp = dp[0].split('/');
+            return new Date(ddp[2], ddp[0]-1, ddp[1], tp[0], tp[1], tp[2]);
+          };
+
+          const diffHrs = (parseFormatted(targetFormatter, absoluteDate) - parseFormatted(srcFormatter, absoluteDate)) / (1000 * 60 * 60);
+          offsetText = diffHrs === 0 ? 'Same Time' : (diffHrs > 0 ? `+${diffHrs}h ahead` : `${diffHrs}h behind`);
+
+        } catch (err) {
+          targetTime = 'Error';
+          targetDate = 'Timezone unsupported';
+          offsetText = '--';
+        }
+
+        return `
+        <div class="zone-box">
+          <div class="zone-header">
+            <div class="zone-name-wrap">
+              <span class="zone-city">${target.name}</span>
+              <span class="zone-code">${target.code} · ${target.zone}</span>
+            </div>
+            <span class="zone-offset-badge">${offsetText}</span>
+          </div>
+          <div>
+            <div class="zone-time-display">${targetTime}</div>
+            <div class="zone-date-display">${targetDate}</div>
+          </div>
+          <div class="zone-deco-icon">${target.icon}</div>
+        </div>`;
+      }).join('');
+    }
+
+    [srcDateInput, srcTimeInput, srcZoneSelect].forEach(input => {
+      input.addEventListener('change', convertTimes);
+      input.addEventListener('input', convertTimes);
+    });
+
+    // Run conversion initially
+    convertTimes();
+  </script>
+</body>
+
+</html>

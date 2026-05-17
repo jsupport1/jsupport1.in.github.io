@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Difference Calculator — Duration Between Two Dates — DailyNumberTask</title>
+  <meta name="description"
+    content="Calculate the exact difference between two dates in years, months, weeks, and days. Option to include or exclude the start/end date. Free and 100% private.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/date-difference/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Date Difference Calculator — Find Duration Between Dates">
+  <meta property="og:description" content="Instantly compute the exact days, weeks, and months between any two calendar dates. Works fully client-side.">
+  <meta property="og:url" content="https://dailynumbertask.in/date-difference/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .date-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .date-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 640px) {
+      .date-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-date-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      transition: all var(--transition);
+    }
+
+    .custom-date-input:focus {
+      outline: none;
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      cursor: pointer;
+    }
+
+    .checkbox-group input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--clr-accent);
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      font-size: var(--sz-sm);
+      color: var(--clr-ink-2);
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .duration-result-banner {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.25);
+      border-radius: var(--rad-lg);
+      padding: 1.75rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .duration-primary-value {
+      font-family: var(--font-display);
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      color: var(--clr-accent);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .duration-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--sz-lg);
+      color: var(--clr-ink-2);
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    .stats-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .stats-card-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+
+    .stat-mini-card {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .stat-mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+      border-color: rgba(200,75,47,0.15);
+    }
+
+    .stat-mini-value {
+      font-family: var(--font-display);
+      font-size: var(--sz-2xl);
+      color: var(--clr-ink);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-mini-label {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .detailed-breakdown {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.5rem;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--clr-surface2);
+      font-size: var(--sz-sm);
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-label {
+      color: var(--clr-ink-2);
+    }
+
+    .breakdown-val {
+      font-weight: 600;
+      color: var(--clr-ink);
+      font-family: monospace;
+      font-size: var(--sz-md);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Date Difference introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Date Difference</span>
+        </nav>
+        <h1>Date Difference</h1>
+        <p class="lead">Calculate the exact distance or calendar duration between any two dates. Convert the result into weeks, months, years, or absolute days instantly.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="date-card">
+          <div class="date-grid">
+            <div class="form-group">
+              <label for="startDate">Start Date</label>
+              <input type="date" class="custom-date-input" id="startDate">
+            </div>
+            <div class="form-group">
+              <label for="endDate">End Date</label>
+              <input type="date" class="custom-date-input" id="endDate">
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="includeEnd">
+            <label for="includeEnd">Include end date in calculation (adds 1 day)</label>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+            <button class="btn btn--primary btn--lg" id="calculateBtn" style="flex: 1; justify-content: center;">
+              <span>🗓️</span> Calculate Duration
+            </button>
+            <button class="btn btn--ghost btn--lg" id="swapBtn" title="Swap Dates">🔄 Swap</button>
+          </div>
+
+          <!-- Result Mount -->
+          <div id="resultContainer" style="display: none;">
+            <div class="duration-result-banner">
+              <div class="duration-primary-value" id="valTotalDays">-- Days</div>
+              <div class="duration-subtitle" id="valAlternativeBreakdown">-- Years, -- Months, -- Days</div>
+            </div>
+
+            <!-- Mini stats breakdown cards -->
+            <div class="stats-card-grid">
+              <div class="stat-mini-card">
+                <div class="stat-mini-value" id="statWeeks">--</div>
+                <div class="stat-mini-label">Weeks &amp; Days</div>
+              </div>
+              <div class="stat-mini-card">
+                <div class="stat-mini-value" id="statMonths">--</div>
+                <div class="stat-mini-label">Total Months</div>
+              </div>
+              <div class="stat-mini-card">
+                <div class="stat-mini-value" id="statPercentage">--%</div>
+                <div class="stat-mini-label">Of a Calendar Year</div>
+              </div>
+            </div>
+
+            <!-- Detailed Breakdown -->
+            <div class="detailed-breakdown">
+              <h3 style="font-size: var(--sz-md); margin-bottom: 1rem; font-family: var(--font-body); font-weight: 600;">Time Translation Metrics</h3>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Total Hours</span>
+                <span class="breakdown-val" id="valHours">--</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Total Minutes</span>
+                <span class="breakdown-val" id="valMinutes">--</span>
+              </div>
+              <div class="breakdown-row">
+                <span class="breakdown-label">Total Seconds</span>
+                <span class="breakdown-val" id="valSeconds">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>How to Calculate Calendar Duration</h2>
+          <p>Calculating the duration between two dates is highly common in business planning, legal contracts, project timelines, and scientific calculations. This calculator is designed to execute standard calendar mathematics accurately.</p>
+          <h3>Inclusive vs. Exclusive Dates</h3>
+          <p>By default, calendar math counts the duration *between* two points, meaning the last day is excluded. For example, the difference between May 1st and May 2nd is exactly 1 day. However, for project management, employee attendance, or travel booking, both days are usually considered active. Checking the <strong>"Include end date in calculation"</strong> option adds exactly 1 day to the final count, representing a fully inclusive time window.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('date-difference');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    // Default dates setting
+    const today = new Date();
+    const futureDate = new Date();
+    futureDate.setDate(today.getDate() + 30); // 30 days later
+
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    const includeEndCheckbox = document.getElementById('includeEnd');
+    const calculateBtn = document.getElementById('calculateBtn');
+    const swapBtn = document.getElementById('swapBtn');
+    const resultContainer = document.getElementById('resultContainer');
+
+    startInput.value = today.toISOString().split('T')[0];
+    endInput.value = futureDate.toISOString().split('T')[0];
+
+    function calculateDifference() {
+      const startVal = startInput.value;
+      const endVal = endInput.value;
+
+      if (!startVal || !endVal) {
+        showToast('Please enter both dates.', 'error');
+        return;
+      }
+
+      const date1 = new Date(startVal + 'T00:00:00');
+      const date2 = new Date(endVal + 'T00:00:00');
+
+      const isReversed = date2 < date1;
+      const dStart = isReversed ? date2 : date1;
+      const dEnd = isReversed ? date1 : date2;
+
+      // Calculate total days
+      const diffMs = dEnd.getTime() - dStart.getTime();
+      let totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+      if (includeEndCheckbox.checked) {
+        totalDays += 1;
+      }
+
+      // Format Total Days text
+      document.getElementById('valTotalDays').textContent = `${totalDays.toLocaleString()} Day${totalDays !== 1 ? 's' : ''}`;
+
+      // Calendar breakdown (Years, Months, Days)
+      // Adjust end date if inclusive
+      const dEndAdjusted = new Date(dEnd);
+      if (includeEndCheckbox.checked) {
+        dEndAdjusted.setDate(dEndAdjusted.getDate() + 1);
+      }
+
+      let years = dEndAdjusted.getFullYear() - dStart.getFullYear();
+      let months = dEndAdjusted.getMonth() - dStart.getMonth();
+      let days = dEndAdjusted.getDate() - dStart.getDate();
+
+      if (days < 0) {
+        months--;
+        const prevMonth = new Date(dEndAdjusted.getFullYear(), dEndAdjusted.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      // Format Calendar Breakdown text
+      let altBreakdown = '';
+      if (years === 0 && months === 0 && days === 0) {
+        altBreakdown = 'Same day';
+      } else {
+        const parts = [];
+        if (years > 0) parts.push(`${years} Year${years !== 1 ? 's' : ''}`);
+        if (months > 0) parts.push(`${months} Month${months !== 1 ? 's' : ''}`);
+        if (days > 0) parts.push(`${days} Day${days !== 1 ? 's' : ''}`);
+        altBreakdown = parts.join(', ');
+      }
+      if (isReversed) {
+        altBreakdown += ' (Reversed)';
+      }
+      document.getElementById('valAlternativeBreakdown').textContent = altBreakdown;
+
+      // Stats card calculations
+      // Weeks and Remaining Days
+      const totalWeeks = Math.floor(totalDays / 7);
+      const remDays = totalDays % 7;
+      document.getElementById('statWeeks').innerHTML = `${totalWeeks}w <span style="font-size: var(--sz-sm); font-weight: normal; color: var(--clr-ink-3)">${remDays}d</span>`;
+
+      // Total Months & Days
+      const estMonths = (years * 12) + months;
+      document.getElementById('statMonths').textContent = estMonths.toLocaleString();
+
+      // Percentage of a year (365 days base)
+      const percentage = ((totalDays / 365) * 100).toFixed(1);
+      document.getElementById('statPercentage').textContent = `${percentage}%`;
+
+      // Translate metrics
+      const totalHours = totalDays * 24;
+      const totalMinutes = totalHours * 60;
+      const totalSeconds = totalMinutes * 60;
+
+      document.getElementById('valHours').textContent = totalHours.toLocaleString();
+      document.getElementById('valMinutes').textContent = totalMinutes.toLocaleString();
+      document.getElementById('valSeconds').textContent = totalSeconds.toLocaleString();
+
+      resultContainer.style.display = 'block';
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    calculateBtn.addEventListener('click', calculateDifference);
+
+    swapBtn.addEventListener('click', () => {
+      const temp = startInput.value;
+      startInput.value = endInput.value;
+      endInput.value = temp;
+      calculateDifference();
+      showToast('Dates swapped!', 'success');
+    });
+
+    includeEndCheckbox.addEventListener('change', calculateDifference);
+
+    // Initial run
+    calculateDifference();
+  </script>
+</body>
+
+</html>

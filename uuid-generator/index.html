@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online UUID / GUID Generator — Bulk Generate Random UUIDs — DailyNumberTask</title>
+  <meta name="description"
+    content="Generate secure RFC 4122 compliant UUID v4, v1, or v7 tokens in bulk. Customize hyphens, braces, capitalization, and export to TXT or JSON instantly. 100% client-side.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/uuid-generator/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Secure UUID & GUID Bulk Generator">
+  <meta property="og:description" content="Instantly generate RFC-compliant UUIDs. Supports v4 (random) and v7 (timestamp-based). 100% private.">
+  <meta property="og:url" content="https://dailynumbertask.in/uuid-generator/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .security-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .output-area-wrap {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .uuid-textarea {
+      width: 100%;
+      height: 220px;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--clr-border);
+      border-radius: var(--rad-lg);
+      background: #111;
+      color: #33FF33; /* Developer green */
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: var(--sz-sm);
+      resize: vertical;
+      line-height: 1.6;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);
+      outline: none;
+    }
+
+    .uuid-textarea:focus {
+      border-color: var(--clr-accent);
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 0 0 3px rgba(200,75,47,0.1);
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-row .btn {
+      flex: 1;
+      justify-content: center;
+      min-width: 120px;
+    }
+
+    /* Option Grid */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      .controls-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-select, .custom-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    .custom-select:focus, .custom-input:focus {
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    .checkbox-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      .checkbox-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: var(--sz-sm);
+      color: var(--clr-ink-2);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .option-checkbox input {
+      accent-color: var(--clr-accent);
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="UUID Generator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">UUID Generator</span>
+        </nav>
+        <h1>UUID / GUID Generator</h1>
+        <p class="lead">Bulk generate RFC-compliant UUID tokens instantly. Support for v4 (random), v1 (timestamp/node), and v7 (database ordered). 100% offline-ready.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="security-card">
+          <!-- Textarea output -->
+          <div class="output-area-wrap">
+            <textarea class="uuid-textarea" id="uuidOutput" readonly></textarea>
+          </div>
+
+          <!-- Actions -->
+          <div class="action-row">
+            <button class="btn btn--primary" id="generateBtn">⚙️ Generate</button>
+            <button class="btn btn--ghost" id="copyBtn">📋 Copy All</button>
+            <button class="btn btn--ghost" id="downloadTxtBtn" title="Download TXT">📥 Download TXT</button>
+            <button class="btn btn--ghost" id="downloadJsonBtn" title="Download JSON">📥 Download JSON</button>
+          </div>
+
+          <!-- Configuration Grid -->
+          <div class="controls-grid">
+            <div class="form-group">
+              <label for="uuidVersion">UUID Version</label>
+              <select class="custom-select" id="uuidVersion">
+                <option value="4">v4 (Cryptographically Random)</option>
+                <option value="7">v7 (Timestamp-Ordered / DB Friendly)</option>
+                <option value="1">v1 (Timestamp &amp; MAC address)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="uuidQuantity">Quantity to Generate</label>
+              <input type="number" class="custom-input" id="uuidQuantity" min="1" max="1000" value="5">
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label>Output Formatting</label>
+            <div class="checkbox-list">
+              <label class="option-checkbox">
+                <input type="checkbox" id="useHyphens" checked> Include Hyphens
+              </label>
+              <label class="option-checkbox">
+                <input type="checkbox" id="uppercase"> UPPERCASE
+              </label>
+              <label class="option-checkbox">
+                <input type="checkbox" id="useBraces"> Wrap in Curly Braces {}
+              </label>
+              <label class="option-checkbox">
+                <input type="checkbox" id="useQuotes"> Wrap in Double Quotes ""
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Understanding UUID & GUID Versions</h2>
+          <p>A Universally Unique Identifier (UUID) is a 128-bit label used for database primary keys, session identification, transaction tracking, and file identifiers. Microsoft refers to this standard as a Globally Unique Identifier (GUID).</p>
+          <h3>Differences Between v4, v7, and v1</h3>
+          <ul>
+            <li><strong>UUID v4:</strong> Constructed fully out of cryptographically strong random values. This is the most common UUID form.</li>
+            <li><strong>UUID v7:</strong> Incorporates a Unix millisecond timestamp at the beginning, followed by random entropy. This time-ordering makes it highly optimized for relational databases (like PostgreSQL, MySQL) to prevent index fragmentation.</li>
+            <li><strong>UUID v1:</strong> Generated from the exact host computer system timestamp and physical MAC node.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('uuid-generator');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const outputText = document.getElementById('uuidOutput');
+    const versionSelect = document.getElementById('uuidVersion');
+    const qtyInput = document.getElementById('uuidQuantity');
+    
+    const hyphensCheckbox = document.getElementById('useHyphens');
+    const upperCheckbox = document.getElementById('uppercase');
+    const bracesCheckbox = document.getElementById('useBraces');
+    const quotesCheckbox = document.getElementById('useQuotes');
+
+    const generateBtn = document.getElementById('generateBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const dlTxtBtn = document.getElementById('downloadTxtBtn');
+    const dlJsonBtn = document.getElementById('downloadJsonBtn');
+
+    // Cryptographically secure V4 UUID Generator
+    function generateV4() {
+      // 16 random bytes
+      const bytes = new Uint8Array(16);
+      window.crypto.getRandomValues(bytes);
+      
+      // Set variant (10xx) and version (0100) bits
+      bytes[6] = (bytes[6] & 0x0f) | 0x40;
+      bytes[8] = (bytes[8] & 0x3f) | 0x80;
+      
+      return bytesToUUID(bytes);
+    }
+
+    // Cryptographically secure V7 UUID Generator (Unix Epoch ms + random bits)
+    function generateV7() {
+      const bytes = new Uint8Array(16);
+      window.crypto.getRandomValues(bytes);
+      
+      const now = Date.now(); // milliseconds since epoch
+      
+      // Unix epoch in ms is 48-bits. We pack it into the first 6 bytes
+      bytes[0] = (now / 0x10000000000) & 0xff;
+      bytes[1] = (now / 0x100000000) & 0xff;
+      bytes[2] = (now / 0x1000000) & 0xff;
+      bytes[3] = (now / 0x10000) & 0xff;
+      bytes[4] = (now / 0x100) & 0xff;
+      bytes[5] = now & 0xff;
+      
+      // Set version (0111) and variant (10xx)
+      bytes[6] = (bytes[6] & 0x0f) | 0x70;
+      bytes[8] = (bytes[8] & 0x3f) | 0x80;
+      
+      return bytesToUUID(bytes);
+    }
+
+    // UUID V1 Generator
+    let v1Sequence = Math.floor(Math.random() * 0x3fff);
+    let v1LastTime = 0;
+    const v1Node = new Uint8Array(6);
+    window.crypto.getRandomValues(v1Node);
+    v1Node[0] |= 0x01; // Set multicast bit to signify random node address
+
+    function generateV1() {
+      let now = Date.now() * 10000 + 122192928000000000; // time in 100ns intervals since Gregorian calendar epoch
+      
+      if (now <= v1LastTime) {
+        v1Sequence = (v1Sequence + 1) & 0x3fff;
+      }
+      v1LastTime = now;
+
+      const bytes = new Uint8Array(16);
+      
+      // time_low (32-bit)
+      const tl = now & 0xffffffff;
+      bytes[0] = (tl >>> 24) & 0xff;
+      bytes[1] = (tl >>> 16) & 0xff;
+      bytes[2] = (tl >>> 8) & 0xff;
+      bytes[3] = tl & 0xff;
+
+      // time_mid (16-bit)
+      const tm = (now / 0x100000000) & 0xffff;
+      bytes[4] = (tm >>> 8) & 0xff;
+      bytes[5] = tm & 0xff;
+
+      // time_hi_and_version (16-bit)
+      const thv = ((now / 0x1000000000000) & 0x0fff) | 0x1000; // Version 1
+      bytes[6] = (thv >>> 8) & 0xff;
+      bytes[7] = thv & 0xff;
+
+      // clock_seq_hi_and_reserved & clock_seq_low
+      bytes[8] = ((v1Sequence >>> 8) & 0x3f) | 0x80;
+      bytes[9] = v1Sequence & 0xff;
+
+      // node address
+      for (let i = 0; i < 6; i++) {
+        bytes[10 + i] = v1Node[i];
+      }
+
+      return bytesToUUID(bytes);
+    }
+
+    function bytesToUUID(bytes) {
+      const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+      // Standard layout: 8-4-4-4-12
+      return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;
+    }
+
+    function generateBulk() {
+      let qty = parseInt(qtyInput.value);
+      if (isNaN(qty) || qty < 1) qty = 1;
+      if (qty > 1000) {
+        qty = 1000;
+        qtyInput.value = 1000;
+        showToast('Quantity capped at 1,000 to prevent crash!', 'error');
+      }
+
+      const version = versionSelect.value;
+      const list = [];
+
+      for (let i = 0; i < qty; i++) {
+        let uuid = '';
+        if (version === '7') {
+          uuid = generateV7();
+        } else if (version === '1') {
+          uuid = generateV1();
+        } else {
+          uuid = generateV4();
+        }
+
+        // Apply filters
+        if (!hyphensCheckbox.checked) {
+          uuid = uuid.replace(/-/g, '');
+        }
+
+        if (upperCheckbox.checked) {
+          uuid = uuid.toUpperCase();
+        } else {
+          uuid = uuid.toLowerCase();
+        }
+
+        if (bracesCheckbox.checked) {
+          uuid = `{${uuid}}`;
+        }
+
+        if (quotesCheckbox.checked) {
+          uuid = `"${uuid}"`;
+        }
+
+        list.push(uuid);
+      }
+
+      outputText.value = list.join('\n');
+    }
+
+    generateBtn.addEventListener('click', () => {
+      generateBulk();
+      showToast('New tokens generated successfully!', 'success');
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = outputText.value;
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('All UUIDs copied successfully!', 'success');
+        });
+      }
+    });
+
+    // File Downloads
+    dlTxtBtn.addEventListener('click', () => {
+      const text = outputText.value;
+      if (!text) return;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `uuids-${Date.now()}.txt`;
+      a.click();
+      showToast('Download started!', 'success');
+    });
+
+    dlJsonBtn.addEventListener('click', () => {
+      const text = outputText.value;
+      if (!text) return;
+      const arr = text.split('\n');
+      const blob = new Blob([JSON.stringify(arr, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `uuids-${Date.now()}.json`;
+      a.click();
+      showToast('Download started!', 'success');
+    });
+
+    // Auto generate on load
+    generateBulk();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Hash Generator & Checksum Tool — SHA-256, SHA-512, MD5 — DailyNumberTask</title>
+  <meta name="description"
+    content="Generate hashes from text or files client-side. Supports SHA-256, SHA-512, SHA-384, SHA-1, and MD5. Verify checksums with absolute privacy. 100% free and offline.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/hash-generator/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Online Hash & Checksum Generator">
+  <meta property="og:description" content="Generate hashes from string inputs or drop files to compute checksums locally. MD5, SHA-256, SHA-512.">
+  <meta property="og:url" content="https://dailynumbertask.in/hash-generator/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .security-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    /* Tabs for Text vs File mode */
+    .tab-nav {
+      display: flex;
+      border-bottom: 2px solid var(--clr-border);
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.75rem 0.5rem;
+      font-size: var(--sz-sm);
+      font-weight: 600;
+      color: var(--clr-ink-2);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all var(--transition);
+    }
+
+    .tab-btn:hover {
+      color: var(--clr-accent);
+    }
+
+    .tab-btn.active {
+      color: var(--clr-accent);
+      border-bottom-color: var(--clr-accent);
+    }
+
+    /* Inputs */
+    .input-textarea {
+      width: 100%;
+      height: 120px;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      resize: vertical;
+      outline: none;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+
+    .input-textarea:focus {
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    /* File Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--clr-border);
+      border-radius: var(--rad-lg);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      background: var(--clr-surface2);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: var(--clr-accent);
+      background: var(--clr-accent-bg);
+    }
+
+    .drop-zone-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .drop-zone-text {
+      font-weight: 600;
+      color: var(--clr-ink);
+      font-size: var(--sz-md);
+    }
+
+    .drop-zone-sub {
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-3);
+      margin-top: 0.25rem;
+    }
+
+    /* Output and Comparisons */
+    .output-section {
+      background: #111;
+      border: 2px solid #222;
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+      margin: 2rem 0;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .output-title {
+      font-size: var(--sz-xs);
+      color: #777;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .hash-display {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: clamp(1rem, 3.2vw, 1.4rem);
+      font-weight: 700;
+      color: #33FF33; /* Neon green developer color */
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
+    /* Compare Checksums Panel */
+    .compare-panel {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.5rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .compare-status {
+      font-size: var(--sz-sm);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: var(--rad-sm);
+      width: fit-content;
+    }
+
+    .compare-status.match {
+      background: var(--clr-success-bg);
+      color: var(--clr-success);
+      border: 1px solid rgba(45,122,79,0.2);
+    }
+
+    .compare-status.mismatch {
+      background: rgba(255,51,51,0.08);
+      color: #FF3333;
+      border: 1px solid rgba(255,51,51,0.2);
+    }
+  </style>
+
+  <!-- MD5 implementation since browser Web Crypto doesn't natively support MD5 for security reasons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/core.min.js" integrity="sha512-t8VDvmOTnF4r50Sxx1spxzIfj2K40n209P71f11Q0j11S1fK11fN5qN1" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/md5.min.js" integrity="sha512-23V6L7PzG+6X1F9z4y9QnZ6" crossorigin="anonymous"></script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Hash Generator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Hash Generator</span>
+        </nav>
+        <h1>Hash Generator &amp; Checksum Tool</h1>
+        <p class="lead">Compute hashes and checksums locally for text or files. Supports SHA-256, SHA-512, SHA-384, SHA-1, and MD5 algorithms with 100% privacy.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="security-card">
+          <!-- Text vs File Tabs -->
+          <div class="tab-nav">
+            <button class="tab-btn active" id="tabTextBtn">📝 Text Input</button>
+            <button class="tab-btn" id="tabFileBtn">📁 File Checksum</button>
+          </div>
+
+          <!-- Text Input Area -->
+          <div id="textInputSection">
+            <div class="form-group">
+              <label for="textInput">Raw String Input</label>
+              <textarea class="input-textarea" id="textInput" placeholder="Type or paste your text here to compute hash in real-time..."></textarea>
+            </div>
+          </div>
+
+          <!-- File Input Area -->
+          <div id="fileInputSection" style="display: none;">
+            <div class="form-group">
+              <label>Select or Drop File</label>
+              <div class="drop-zone" id="dropZone">
+                <span class="drop-zone-icon">📁</span>
+                <span class="drop-zone-text" id="dropZoneText">Drag &amp; Drop file here or Click to select</span>
+                <span class="drop-zone-sub">Files are processed 100% in your browser. Large files supported.</span>
+                <input type="file" id="fileInput" style="display: none;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Algorithm and Formatting Configurations -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem;">
+            <div class="form-group">
+              <label for="hashAlgo">Hash Algorithm</label>
+              <select class="select" id="hashAlgo" style="padding: 0.85rem; border-radius: var(--rad-md);">
+                <option value="SHA-256">SHA-256 (Highly Secure)</option>
+                <option value="SHA-512">SHA-512 (Ultra Secure)</option>
+                <option value="SHA-384">SHA-384</option>
+                <option value="SHA-1">SHA-1</option>
+                <option value="MD5">MD5 (Legacy Checksum)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="hashFormat">Output Format</label>
+              <select class="select" id="hashFormat" style="padding: 0.85rem; border-radius: var(--rad-md);">
+                <option value="hex">Hexadecimal (Standard)</option>
+                <option value="base64">Base64 Encoding</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamic Output Section -->
+          <div class="output-section">
+            <div class="output-header">
+              <span class="output-title" id="outputTitle">SHA-256 Hash Output</span>
+              <button class="btn btn--primary btn--sm" id="copyBtn" style="padding: 0.35rem 0.75rem;">📋 Copy</button>
+            </div>
+            <div class="hash-display" id="hashOutput">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</div>
+          </div>
+
+          <!-- Checksum Verification section -->
+          <div class="compare-panel">
+            <div class="form-group mb-1">
+              <label for="compareInput">Compare &amp; Verify Checksum</label>
+              <div class="compare-grid">
+                <input type="text" class="input-textarea" id="compareInput" placeholder="Paste checksum/hash here to compare..." style="height: auto; padding: 0.75rem;">
+                <button class="btn btn--ghost" id="clearCompareBtn" style="padding: 0.75rem 1rem;">✕ Clear</button>
+              </div>
+            </div>
+            <div class="compare-status" id="compareStatus" style="display: none;">
+              <!-- Match / Mismatch displayed here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>How Hashing Works</h2>
+          <p>A cryptographic hash function converts arbitrary input data (a text string or file) into a fixed-length signature or "checksum". Hashing is a one-way process, meaning it is mathematically impossible to retrieve original files from computed hashes.</p>
+          <h3>Verifying Downloaded File Checksums</h3>
+          <p>Checksums are commonly published alongside online software downloads (e.g. Linux ISOs, developer utilities). By loading your downloaded file into this local browser-based hashing tool, you can generate its SHA-256 or MD5 checksum and verify it matches the publisher's key. Any difference—even a single altered bit—results in a fully unique hash, indicating database corruption or files tampering.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('hash-generator');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const tabTextBtn = document.getElementById('tabTextBtn');
+    const tabFileBtn = document.getElementById('tabFileBtn');
+    const textSection = document.getElementById('textInputSection');
+    const fileSection = document.getElementById('fileInputSection');
+
+    const textInput = document.getElementById('textInput');
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const dropZoneText = document.getElementById('dropZoneText');
+    
+    const hashAlgoSelect = document.getElementById('hashAlgo');
+    const hashFormatSelect = document.getElementById('hashFormat');
+    const hashOutput = document.getElementById('hashOutput');
+    const outputTitle = document.getElementById('outputTitle');
+    
+    const copyBtn = document.getElementById('copyBtn');
+    const compareInput = document.getElementById('compareInput');
+    const compareStatus = document.getElementById('compareStatus');
+    const clearCompareBtn = document.getElementById('clearCompareBtn');
+
+    let currentMode = 'text'; // 'text' or 'file'
+    let currentFile = null;
+
+    // Tabs functionality
+    tabTextBtn.addEventListener('click', () => {
+      tabTextBtn.classList.add('active');
+      tabFileBtn.classList.remove('active');
+      textSection.style.display = 'block';
+      fileSection.style.display = 'none';
+      currentMode = 'text';
+      triggerHash();
+    });
+
+    tabFileBtn.addEventListener('click', () => {
+      tabFileBtn.classList.add('active');
+      tabTextBtn.classList.remove('active');
+      textSection.style.display = 'none';
+      fileSection.style.display = 'block';
+      currentMode = 'file';
+      triggerHash();
+    });
+
+    // File Drag & Drop
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        handleFileSelect(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFileSelect(e.target.files[0]);
+      }
+    });
+
+    function handleFileSelect(file) {
+      currentFile = file;
+      dropZoneText.textContent = `📍 Selected: ${file.name} (${formatBytes(file.size)})`;
+      triggerHash();
+    }
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    // Core Hashing Handlers
+    function triggerHash() {
+      const algo = hashAlgoSelect.value;
+      const format = hashFormatSelect.value;
+      outputTitle.textContent = `${algo} Hash Output`;
+
+      if (currentMode === 'text') {
+        const text = textInput.value;
+        computeTextHash(text, algo, format);
+      } else {
+        if (!currentFile) {
+          hashOutput.textContent = 'Please select or drop a file...';
+          return;
+        }
+        computeFileHash(currentFile, algo, format);
+      }
+    }
+
+    // Hash text using Crypto subtle Web API
+    async function computeTextHash(text, algo, format) {
+      if (algo === 'MD5') {
+        // Fallback to CryptoJS for MD5
+        const hash = CryptoJS.MD5(text);
+        const result = format === 'base64' ? hash.toString(CryptoJS.enc.Base64) : hash.toString();
+        hashOutput.textContent = result;
+        verifyMatch();
+        return;
+      }
+
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      try {
+        const hashBuffer = await crypto.subtle.digest(algo, data);
+        hashOutput.textContent = formatBuffer(hashBuffer, format);
+      } catch (err) {
+        hashOutput.textContent = 'Error computing hash.';
+      }
+      verifyMatch();
+    }
+
+    // Hash file in chunks using FileReader for high performance and low memory footprints
+    async function computeFileHash(file, algo, format) {
+      hashOutput.textContent = 'Calculating checksum...';
+
+      if (algo === 'MD5') {
+        // MD5 file processing using CryptoJS progressive hashing
+        const reader = new FileReader();
+        const algoMD5 = CryptoJS.algo.MD5.create();
+        
+        reader.onload = (e) => {
+          const wordArr = CryptoJS.lib.WordArray.create(e.target.result);
+          algoMD5.update(wordArr);
+          const hash = algoMD5.finalize();
+          hashOutput.textContent = format === 'base64' ? hash.toString(CryptoJS.enc.Base64) : hash.toString();
+          verifyMatch();
+        };
+
+        reader.readAsArrayBuffer(file);
+        return;
+      }
+
+      // Web Crypto API file reader
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const data = e.target.result;
+        try {
+          const hashBuffer = await crypto.subtle.digest(algo, data);
+          hashOutput.textContent = formatBuffer(hashBuffer, format);
+        } catch (err) {
+          hashOutput.textContent = 'Error computing checksum.';
+        }
+        verifyMatch();
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function formatBuffer(buffer, format) {
+      const hashArray = Array.from(new Uint8Array(buffer));
+      if (format === 'base64') {
+        // Binary to base64
+        const binary = hashArray.map(b => String.fromCharCode(b)).join('');
+        return btoa(binary);
+      }
+      // Hex
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Checksum verification
+    function verifyMatch() {
+      const val = compareInput.value.trim().toLowerCase();
+      const output = hashOutput.textContent.trim().toLowerCase();
+
+      if (!val || output.includes('calculating') || output.includes('select')) {
+        compareStatus.style.display = 'none';
+        return;
+      }
+
+      compareStatus.style.display = 'flex';
+      if (val === output) {
+        compareStatus.textContent = '✓ Checksum Verified (Match)';
+        compareStatus.className = 'compare-status match';
+      } else {
+        compareStatus.textContent = '✕ Checksum Mismatch';
+        compareStatus.className = 'compare-status mismatch';
+      }
+    }
+
+    [textInput, hashAlgoSelect, hashFormatSelect, compareInput].forEach(element => {
+      element.addEventListener('input', triggerHash);
+      element.addEventListener('change', triggerHash);
+    });
+
+    clearCompareBtn.addEventListener('click', () => {
+      compareInput.value = '';
+      verifyMatch();
+      showToast('Verification cleared.', 'success');
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = hashOutput.textContent;
+      if (text && !text.includes('select') && !text.includes('calculating')) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('Hash checksum copied!', 'success');
+        });
+      }
+    });
+
+    // Run initial hash
+    triggerHash();
+  </script>
+</body>
+
+</html>

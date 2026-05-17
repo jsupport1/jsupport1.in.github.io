@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strong Password Generator — Generate Secure Passwords — DailyNumberTask</title>
+  <meta name="description"
+    content="Generate strong, secure, randomized passwords locally in your browser. Fully customizable length, character sets, and offline-secure. 100% private.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/password-generator/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Strong Password Generator — Generate Secure Keys Online">
+  <meta property="og:description" content="Build highly secure, random passwords. Set custom rules, check strength, and copy instantly. 100% client-side privacy.">
+  <meta property="og:url" content="https://dailynumbertask.in/password-generator/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .security-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    /* Output banner styling with cyber-shield look */
+    .output-banner {
+      background: #111;
+      border: 2px solid #222;
+      border-radius: var(--rad-lg);
+      padding: 1.5rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .output-text {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      font-weight: 700;
+      color: #00FF66; /* Neon green security text */
+      word-break: break-all;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding-right: 0.5rem;
+      scrollbar-width: thin;
+    }
+
+    .output-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .cyber-btn {
+      background: #222;
+      border: 1px solid #444;
+      color: #aaa;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--rad-sm);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all var(--transition);
+    }
+
+    .cyber-btn:hover {
+      background: var(--clr-accent-bg);
+      border-color: var(--clr-accent);
+      color: var(--clr-accent);
+    }
+
+    /* Slider / Strength controls */
+    .strength-wrapper {
+      margin-bottom: 2rem;
+    }
+
+    .strength-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--sz-sm);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .strength-meter {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--clr-surface2);
+      overflow: hidden;
+      display: flex;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease, background-color 0.4s ease;
+    }
+
+    /* Option Grid checkboxes */
+    .option-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .option-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      padding: 0.75rem 1rem;
+      border-radius: var(--rad-md);
+      font-size: var(--sz-sm);
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      transition: all var(--transition);
+    }
+
+    .option-checkbox:hover {
+      border-color: var(--clr-accent);
+    }
+
+    .option-checkbox input {
+      accent-color: var(--clr-accent);
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    /* Slider styling */
+    .slider-container {
+      margin-bottom: 1.75rem;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: var(--sz-sm);
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .custom-range {
+      width: 100%;
+      height: 6px;
+      accent-color: var(--clr-accent);
+      cursor: pointer;
+    }
+
+    /* History section */
+    .history-section {
+      border-top: 1px solid var(--clr-border);
+      padding-top: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.75rem;
+      background: var(--clr-surface2);
+      border-radius: var(--rad-sm);
+      font-size: var(--sz-xs);
+      font-family: monospace;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--clr-border);
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Password Generator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Password Generator</span>
+        </nav>
+        <h1>Password Generator</h1>
+        <p class="lead">Create highly secure, cryptographically random passwords instantly. Fully client-side processing guarantees your sensitive keys never touch the web.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="security-card">
+          <!-- Password display -->
+          <div class="output-banner">
+            <div class="output-text" id="passwordOutput">LoadingSecureKey...</div>
+            <div class="output-actions">
+              <button class="cyber-btn" id="regenerateBtn" title="Generate New">🔄</button>
+              <button class="cyber-btn" id="copyBtn" title="Copy to Clipboard">📋 Copy</button>
+            </div>
+          </div>
+
+          <!-- Strength Meter -->
+          <div class="strength-wrapper">
+            <div class="strength-header">
+              <span>Security Strength</span>
+              <span id="strengthText" style="font-weight: 700;">--</span>
+            </div>
+            <div class="strength-meter">
+              <div class="strength-bar" id="strengthBar"></div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="slider-container">
+            <div class="slider-header">
+              <label for="passwordLength">Password Length</label>
+              <span id="lengthDisplay" style="font-family: monospace; font-size: var(--sz-md); color: var(--clr-accent);">16</span>
+            </div>
+            <input type="range" class="custom-range" id="passwordLength" min="6" max="128" value="16">
+          </div>
+
+          <div class="option-grid">
+            <label class="option-checkbox">
+              <input type="checkbox" id="includeUpper" checked> Include Uppercase (A-Z)
+            </label>
+            <label class="option-checkbox">
+              <input type="checkbox" id="includeLower" checked> Include Lowercase (a-z)
+            </label>
+            <label class="option-checkbox">
+              <input type="checkbox" id="includeNumbers" checked> Include Numbers (0-9)
+            </label>
+            <label class="option-checkbox">
+              <input type="checkbox" id="includeSymbols" checked> Include Symbols (!@#$)
+            </label>
+            <label class="option-checkbox" style="grid-column: 1 / -1;">
+              <input type="checkbox" id="excludeSimilar"> Exclude Similar Characters (e.g. i, l, 1, L, o, 0, O)
+            </label>
+          </div>
+
+          <!-- Session history list -->
+          <div class="history-section" id="historyBox" style="display: none;">
+            <h3 style="font-size: var(--sz-sm); margin-bottom: 0.75rem; font-family: var(--font-body); font-weight: 600;">
+              Generated History (Local Session)
+            </h3>
+            <div id="historyList">
+              <!-- Filled dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Why Use an Offline Password Generator?</h2>
+          <p>Many online password utilities generate credentials by sending requests to a central remote server, which represents a potential surveillance vector. This password generator operates <strong>100% locally</strong> inside your own browser tab using cryptographically secure random number APIs (<code>crypto.getRandomValues</code>), which makes it highly private.</p>
+          <h3>How Password Strength is Checked</h3>
+          <p>This generator computes strength based on total information entropy. High entropy is reached by increasing password length and introducing diversified character sets (numbers, casing, symbols). A secure key of 16 characters or more with mixed pools requires trillions of computing years to crack by standard modern GPUs.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('password-generator');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const lengthSlider = document.getElementById('passwordLength');
+    const lengthDisplay = document.getElementById('lengthDisplay');
+    
+    const useUpper = document.getElementById('includeUpper');
+    const useLower = document.getElementById('includeLower');
+    const useNumbers = document.getElementById('includeNumbers');
+    const useSymbols = document.getElementById('includeSymbols');
+    const excludeSim = document.getElementById('excludeSimilar');
+
+    const outputText = document.getElementById('passwordOutput');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+
+    const regenerateBtn = document.getElementById('regenerateBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    
+    const historyBox = document.getElementById('historyBox');
+    const historyList = document.getElementById('historyList');
+
+    const sessionHistory = [];
+
+    function generatePassword() {
+      const length = parseInt(lengthSlider.value);
+      lengthDisplay.textContent = length;
+
+      const upperPool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const lowerPool = 'abcdefghijklmnopqrstuvwxyz';
+      const numPool = '0123456789';
+      const symPool = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+
+      let charPool = '';
+      if (useUpper.checked) charPool += upperPool;
+      if (useLower.checked) charPool += lowerPool;
+      if (useNumbers.checked) charPool += numPool;
+      if (useSymbols.checked) charPool += symPool;
+
+      if (!charPool) {
+        outputText.textContent = 'Select at least 1 option!';
+        outputText.style.color = '#FF3333';
+        updateStrength(0);
+        return;
+      }
+
+      // Exclude similar characters
+      if (excludeSim.checked) {
+        const similarPattern = /[il1Lo0O|I]/g;
+        charPool = charPool.replace(similarPattern, '');
+      }
+
+      if (!charPool) {
+        outputText.textContent = 'Pool is empty after filter!';
+        outputText.style.color = '#FF3333';
+        updateStrength(0);
+        return;
+      }
+
+      let password = '';
+      // Use cryptographically secure pseudorandom number generator (CSPRNG)
+      const randomValues = new Uint32Array(length);
+      window.crypto.getRandomValues(randomValues);
+
+      for (let i = 0; i < length; i++) {
+        password += charPool.charAt(randomValues[i] % charPool.length);
+      }
+
+      outputText.textContent = password;
+      outputText.style.color = '#00FF66'; // Back to neon green
+      
+      // Calculate and update strength
+      const entropy = calculateEntropy(password, charPool.length);
+      updateStrength(entropy);
+
+      // Save to history shelf
+      addHistory(password);
+    }
+
+    function calculateEntropy(pwd, poolSize) {
+      return pwd.length * Math.log2(poolSize);
+    }
+
+    function updateStrength(entropy) {
+      let width = '0%';
+      let color = 'transparent';
+      let text = 'None';
+
+      if (entropy > 0) {
+        if (entropy < 30) {
+          width = '25%';
+          color = '#FF3333'; // Weak Red
+          text = 'Very Weak ❌';
+        } else if (entropy < 50) {
+          width = '50%';
+          color = '#FFA500'; // Orange
+          text = 'Weak ⚠️';
+        } else if (entropy < 80) {
+          width = '75%';
+          color = '#FFD700'; // Yellow/Gold
+          text = 'Good Security 👍';
+        } else {
+          width = '100%';
+          color = '#00FF66'; // Neon Green
+          text = 'Excellent / Military-Grade 🛡️';
+        }
+      }
+
+      strengthBar.style.width = width;
+      strengthBar.style.backgroundColor = color;
+      strengthText.textContent = text;
+      strengthText.style.color = color === 'transparent' ? 'inherit' : color;
+    }
+
+    function addHistory(pwd) {
+      if (sessionHistory.includes(pwd)) return;
+      sessionHistory.unshift(pwd);
+      if (sessionHistory.length > 5) sessionHistory.pop(); // Cap at 5
+
+      historyBox.style.display = 'block';
+      historyList.innerHTML = sessionHistory.map(item => `
+        <div class="history-item">
+          <span>${item.length > 25 ? item.substring(0, 22) + '...' : item}</span>
+          <button class="btn btn--ghost btn--sm" style="padding: 0.15rem 0.5rem; font-size: 10px;" onclick="navigator.clipboard.writeText('${item}'); alert('Copied!');">Copy</button>
+        </div>
+      `).join('');
+    }
+
+    lengthSlider.addEventListener('input', generatePassword);
+    [useUpper, useLower, useNumbers, useSymbols, excludeSim].forEach(input => {
+      input.addEventListener('change', generatePassword);
+    });
+
+    regenerateBtn.addEventListener('click', generatePassword);
+    copyBtn.addEventListener('click', () => {
+      const pwd = outputText.textContent;
+      if (pwd && pwd !== 'Select at least 1 option!' && pwd !== 'Pool is empty after filter!') {
+        navigator.clipboard.writeText(pwd).then(() => {
+          showToast('Password copied safely to clipboard!', 'success');
+        });
+      }
+    });
+
+    // Generate initial password
+    generatePassword();
+  </script>
+</body>
+
+</html>

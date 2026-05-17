@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Countdown Timer — Custom Event Countdown — DailyNumberTask</title>
+  <meta name="description"
+    content="Create a beautiful, real-time ticking countdown timer for any custom event, holiday, birthday, or deadline. Customize presets and share with a unique link. Free & secure.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/countdown/index.html">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Online Live Countdown Timer — Share Custom Countdowns">
+  <meta property="og:description" content="Build custom countdown timers for any event in seconds. Supports live shareable URLs and alarm notifications.">
+  <meta property="og:url" content="https://dailynumbertask.in/countdown/index.html">
+
+  <link rel="stylesheet" href="../css/main.css">
+  
+  <style>
+    .countdown-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2.25rem;
+      margin: 1.5rem 0;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      color: var(--clr-ink);
+      margin-bottom: 0.5rem;
+      display: block;
+      font-size: var(--sz-sm);
+    }
+
+    .custom-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--rad-md);
+      font-size: var(--sz-md);
+      font-weight: 500;
+      background: var(--clr-bg);
+      color: var(--clr-ink);
+      transition: all var(--transition);
+    }
+
+    .custom-input:focus {
+      outline: none;
+      border-color: var(--clr-accent);
+      background: var(--clr-surface);
+      box-shadow: 0 0 0 3px rgba(200,75,47,0.12);
+    }
+
+    /* Preset list styling */
+    .presets-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .preset-btn {
+      background: var(--clr-surface2);
+      border: 1px solid var(--clr-border);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: var(--sz-xs);
+      font-weight: 600;
+      color: var(--clr-ink-2);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .preset-btn:hover {
+      background: var(--clr-accent-bg);
+      border-color: var(--clr-accent);
+      color: var(--clr-accent);
+    }
+
+    /* Glowing Digital Countdown Clock styling */
+    .clock-display {
+      background: #111;
+      border-radius: var(--rad-lg);
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.8), 0 4px 20px rgba(200,75,47,0.15);
+      border: 2px solid #222;
+    }
+
+    @media (max-width: 500px) {
+      .clock-display {
+        gap: 0.4rem;
+        padding: 1.5rem 0.5rem;
+      }
+    }
+
+    .clock-unit {
+      text-align: center;
+      min-width: 70px;
+    }
+
+    @media (max-width: 500px) {
+      .clock-unit {
+        min-width: 55px;
+      }
+    }
+
+    .clock-digits {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: clamp(2rem, 6vw, 3.75rem);
+      font-weight: 700;
+      background: linear-gradient(180deg, #FF6F4E 0%, #C84B2F 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      filter: drop-shadow(0 0 10px rgba(200,75,47,0.3));
+    }
+
+    .clock-label {
+      color: #777;
+      font-size: var(--sz-xs);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-top: 0.5rem;
+    }
+
+    .clock-colon {
+      font-size: clamp(1.8rem, 5vw, 3.25rem);
+      font-weight: 700;
+      color: #C84B2F;
+      opacity: 0.8;
+      animation: blink 1.5s infinite;
+      line-height: 1;
+      padding-bottom: 0.5rem;
+    }
+
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      50% { opacity: 0.9; }
+      100% { opacity: 0.2; }
+    }
+
+    /* Event Name overlay */
+    .event-title-display {
+      font-family: var(--font-display);
+      font-size: var(--sz-2xl);
+      color: var(--clr-ink);
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    .share-container {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.15);
+      border-radius: var(--rad-md);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .share-url {
+      flex: 1;
+      font-family: monospace;
+      font-size: var(--sz-xs);
+      color: var(--clr-ink-2);
+      background: var(--clr-surface);
+      padding: 0.5rem;
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-sm);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* Finished animation */
+    .finished-message {
+      text-align: center;
+      padding: 2.5rem;
+      background: var(--clr-success-bg);
+      border: 1px solid rgba(45,122,79,0.25);
+      border-radius: var(--rad-lg);
+      margin: 2rem 0;
+      animation: celebrate 0.5s ease-out;
+    }
+
+    .finished-title {
+      font-family: var(--font-display);
+      font-size: var(--sz-3xl);
+      color: var(--clr-success);
+      margin-bottom: 0.5rem;
+    }
+
+    @keyframes celebrate {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Countdown Timer introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Countdown Timer</span>
+        </nav>
+        <h1>Countdown Timer</h1>
+        <p class="lead">Create beautiful live countdown clocks for your custom events, vacations, birthdays, and product releases. Share your live countdown timer with others.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="countdown-card">
+          <!-- Setup Panel -->
+          <div id="setupPanel">
+            <div class="form-group mb-2">
+              <label for="eventTitle">Event Title</label>
+              <input type="text" class="custom-input" id="eventTitle" placeholder="e.g. My Vacation, New Year 2027" maxlength="60">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+              <div class="form-group">
+                <label for="eventDate">Target Date</label>
+                <input type="date" class="custom-input" id="eventDate">
+              </div>
+              <div class="form-group">
+                <label for="eventTime">Target Time</label>
+                <input type="time" class="custom-input" id="eventTime" value="00:00">
+              </div>
+            </div>
+
+            <label class="form-label mb-1">Quick Presets</label>
+            <div class="presets-container">
+              <button class="preset-btn" data-type="new-year">🎆 New Year</button>
+              <button class="preset-btn" data-type="christmas">🎄 Christmas</button>
+              <button class="preset-btn" data-type="next-month">📅 Next Month</button>
+              <button class="preset-btn" data-type="next-weekend">🏖️ Next Weekend</button>
+              <button class="preset-btn" data-type="ten-minutes">⏱️ 10 Minutes</button>
+            </div>
+
+            <button class="btn btn--primary btn--lg" id="startBtn" style="width: 100%; justify-content: center;">
+              <span>⏳</span> Launch Countdown Clock
+            </button>
+          </div>
+
+          <!-- Active Countdown Panel -->
+          <div id="activePanel" style="display: none;">
+            <div class="event-title-display" id="displayEventTitle">--</div>
+
+            <div class="clock-display">
+              <div class="clock-unit">
+                <div class="clock-digits" id="dDays">00</div>
+                <div class="clock-label">Days</div>
+              </div>
+              <div class="clock-colon">:</div>
+              <div class="clock-unit">
+                <div class="clock-digits" id="dHours">00</div>
+                <div class="clock-label">Hours</div>
+              </div>
+              <div class="clock-colon">:</div>
+              <div class="clock-unit">
+                <div class="clock-digits" id="dMinutes">00</div>
+                <div class="clock-label">Mins</div>
+              </div>
+              <div class="clock-colon">:</div>
+              <div class="clock-unit">
+                <div class="clock-digits" id="dSeconds">00</div>
+                <div class="clock-label">Secs</div>
+              </div>
+            </div>
+
+            <!-- Finished Panel -->
+            <div class="finished-message" id="finishedBox" style="display: none;">
+              <div class="finished-title" id="finishedMessageText">🎉 Time's Up! 🎉</div>
+              <p style="margin:0; color: var(--clr-success);">Your custom countdown event has arrived!</p>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn btn--ghost btn--lg" id="editBtn" style="flex: 1; justify-content: center;">✕ Edit / Stop</button>
+              <button class="btn btn--ghost btn--lg" id="shareBtn" style="flex: 1; justify-content: center;">🔗 Share Link</button>
+            </div>
+
+            <!-- Share URL Drawer -->
+            <div class="share-container" id="shareBox" style="display: none;">
+              <div class="share-url" id="shareUrlText">--</div>
+              <button class="btn btn--primary btn--sm" id="copyShareBtn">📋 Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Content -->
+        <article class="policy-content mt-4">
+          <h2>Using the Custom Event Countdown Clock</h2>
+          <p>This countdown timer is a 100% server-less client-side PWA tool. It calculates millisecond differences in real-time between your current local browser clock and your selected target date-time.</p>
+          <h3>How to Share Countdowns</h3>
+          <p>By clicking <strong>"Share Link"</strong>, you generate a custom query string link. When someone opens this link, the site will automatically configure itself to display your specific countdown event, name, and target timestamp! Perfect for sharing birthdays, weddings, exams, project launches, or vacation countdowns with friends, family, and colleagues.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <!-- Audio element for ticking completion -->
+  <audio id="alarmAudio" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('countdown');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    // Default dates setup
+    const dateInput = document.getElementById('eventDate');
+    const timeInput = document.getElementById('eventTime');
+    const titleInput = document.getElementById('eventTitle');
+    const setupPanel = document.getElementById('setupPanel');
+    const activePanel = document.getElementById('activePanel');
+    const startBtn = document.getElementById('startBtn');
+    const editBtn = document.getElementById('editBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const copyShareBtn = document.getElementById('copyShareBtn');
+    const shareBox = document.getElementById('shareBox');
+    const finishedBox = document.getElementById('finishedBox');
+
+    // Default target: tomorrow
+    const tmw = new Date();
+    tmw.setDate(tmw.getDate() + 1);
+    dateInput.value = tmw.toISOString().split('T')[0];
+
+    let timerInterval = null;
+    let targetTimeMs = null;
+
+    function startTimer(targetMs, title) {
+      if (timerInterval) clearInterval(timerInterval);
+
+      targetTimeMs = targetMs;
+      document.getElementById('displayEventTitle').textContent = title || 'Countdown Event';
+      setupPanel.style.display = 'none';
+      activePanel.style.display = 'block';
+      shareBox.style.display = 'none';
+      finishedBox.style.display = 'none';
+
+      updateClock();
+      timerInterval = setInterval(updateClock, 1000);
+    }
+
+    function updateClock() {
+      const now = Date.now();
+      const diff = targetTimeMs - now;
+
+      if (diff <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('dDays').textContent = '00';
+        document.getElementById('dHours').textContent = '00';
+        document.getElementById('dMinutes').textContent = '00';
+        document.getElementById('dSeconds').textContent = '00';
+        finishedBox.style.display = 'block';
+        
+        // Play audio alert
+        try {
+          document.getElementById('alarmAudio').play();
+        } catch (e) {}
+        
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('dDays').textContent = String(days).padStart(2, '0');
+      document.getElementById('dHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('dMinutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('dSeconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    // Launch button handler
+    startBtn.addEventListener('click', () => {
+      const d = dateInput.value;
+      const t = timeInput.value;
+      const title = titleInput.value.trim();
+
+      if (!d || !t) {
+        showToast('Please enter both target date and time.', 'error');
+        return;
+      }
+
+      const targetDate = new Date(`${d}T${t}:00`);
+      const targetMs = targetDate.getTime();
+
+      if (targetMs <= Date.now()) {
+        showToast('Target date/time must be in the future!', 'error');
+        return;
+      }
+
+      startTimer(targetMs, title);
+    });
+
+    // Preset options
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const type = btn.dataset.type;
+        const now = new Date();
+        let title = '';
+        let targetDate = new Date();
+
+        if (type === 'new-year') {
+          title = `New Year ${now.getFullYear() + 1}`;
+          targetDate = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0);
+        } else if (type === 'christmas') {
+          title = 'Christmas 🎄';
+          let year = now.getFullYear();
+          if (now.getMonth() === 11 && now.getDate() > 25) year++;
+          targetDate = new Date(year, 11, 25, 0, 0, 0);
+        } else if (type === 'next-month') {
+          title = 'Start of Next Month';
+          let m = now.getMonth() + 1;
+          let y = now.getFullYear();
+          if (m > 11) { m = 0; y++; }
+          targetDate = new Date(y, m, 1, 0, 0, 0);
+        } else if (type === 'next-weekend') {
+          title = 'Next Weekend 🏖️';
+          // Find next Friday at 17:00
+          const daysToFriday = (5 - now.getDay() + 7) % 7 || 7;
+          targetDate.setDate(now.getDate() + daysToFriday);
+          targetDate.setHours(17, 0, 0, 0);
+        } else if (type === 'ten-minutes') {
+          title = '10 Minutes Timer';
+          targetDate.setMinutes(now.getMinutes() + 10);
+        }
+
+        titleInput.value = title;
+        dateInput.value = targetDate.toISOString().split('T')[0];
+        timeInput.value = targetDate.toTimeString().split(' ')[0].substring(0, 5);
+        showToast('Preset applied!', 'success');
+      });
+    });
+
+    // Stop/Edit button
+    editBtn.addEventListener('click', () => {
+      clearInterval(timerInterval);
+      activePanel.style.display = 'none';
+      setupPanel.style.display = 'block';
+    });
+
+    // Share link button
+    shareBtn.addEventListener('click', () => {
+      const title = encodeURIComponent(document.getElementById('displayEventTitle').textContent);
+      const url = `${window.location.origin}${window.location.pathname}?to=${targetTimeMs}&title=${title}`;
+      document.getElementById('shareUrlText').textContent = url;
+      shareBox.style.display = 'flex';
+      shareBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    copyShareBtn.addEventListener('click', () => {
+      const url = document.getElementById('shareUrlText').textContent;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Share link copied to clipboard!', 'success');
+      });
+    });
+
+    // URL parameter parsing
+    const urlParams = new URLSearchParams(window.location.search);
+    const toParam = urlParams.get('to');
+    const titleParam = urlParams.get('title');
+
+    if (toParam) {
+      const targetMs = parseInt(toParam);
+      if (targetMs > Date.now()) {
+        const title = titleParam ? decodeURIComponent(titleParam) : 'Shared Countdown';
+        startTimer(targetMs, title);
+        showToast('Loading shared countdown!', 'success');
+      } else {
+        showToast('This shared countdown has already finished.', 'error');
+      }
+    }
+  </script>
+</body>
+
+</html>
