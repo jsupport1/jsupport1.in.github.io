@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
 :root {
-  --clr-bg: #FFFFFF;               /* Light background */
-  --clr-surface: #F7F7F8;          /* Light surface */
-  --clr-surface2: #F7F7F8;         /* Light secondary surface */
-  --clr-border: #E0DDD6;           /* Keep existing border */
-  --clr-ink: #202123;              /* Light text */
-  --clr-ink-2: #4A4845;            /* Secondary text */
-  --clr-ink-3: #8A8780;            /* Tertiary text */
-  --clr-accent: #10A37F;          /* Primary accent */
-  --clr-accent-2: #0E8B6C;        /* Slightly darker accent for hover */
-  --clr-accent-bg: #E0F5F2;        /* Accent background */
+  --clr-bg: #FAFAF9;               /* Light background */
+  --clr-surface: #FAFAF9;          /* Light surface */
+  --clr-surface2: #FAFAF9;         /* Light secondary surface */
+  --clr-border: #08032B;           /* Primary brand border */
+  --clr-ink: #000000;              /* Primary text (black) */
+  --clr-ink-2: #08032B;            /* Secondary text */
+  --clr-ink-3: #08032B;            /* Tertiary text */
+  --clr-accent: #08032B;          /* Primary accent */
+  --clr-accent-2: #08032B;        /* Accent hover */
+  --clr-accent-bg: #FAFAF9;        /* Accent background */
   --clr-success: #2D7A4F;         /* Success colour unchanged */
   --clr-success-bg: #EAF7F0;      /* Success background */
   --font-display: 'DM Serif Display', Georgia, serif;
