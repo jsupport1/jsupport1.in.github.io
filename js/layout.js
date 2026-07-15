@@ -3,7 +3,7 @@ export function renderHeader(activePage = '') {
   const prefix = isRoot ? '' : '../';
   const ctaBtn = (activePage === 'tool' || activePage === 'emi')
     ? ''
-    : `<a href="${prefix}pages/tool.html" class="nav-link nav-cta" aria-label="Try the free converter">Try Free →</a>`;
+    : ``;
   return `
 <!-- Skip to main content (keyboard / screen-reader) -->
 <a href="#main-content" class="sr-only"
@@ -16,7 +16,7 @@ export function renderHeader(activePage = '') {
   <div class="container">
     <a href="${prefix}index.html" class="logo" aria-label="DailyNumberTask Home">
       <div class="logo__icon" aria-hidden="true">N</div>
-      <span class="logo__name">Daily<span>Number</span>Task</span>
+      <span class="logo__name">DailyNumberTask</span>
     </a>
     <nav class="site-nav" id="siteNav" role="navigation" aria-label="Main navigation">
       <a href="${prefix}index.html" class="nav-link ${activePage === 'home' ? 'active' : ''}" aria-current="${activePage === 'home' ? 'page' : 'false'}">Home</a>
@@ -78,11 +78,11 @@ export function renderHeader(activePage = '') {
 export function renderFooter() {
   const year = new Date().getFullYear();
   const isRoot = !([
-    '/pages/', 
-    '/age-calculator/', 
-    '/date-difference/', 
-    '/countdown/', 
-    '/timezone/', 
+    '/pages/',
+    '/age-calculator/',
+    '/date-difference/',
+    '/countdown/',
+    '/timezone/',
     '/working-days/',
     '/password-generator/',
     '/uuid-generator/',
@@ -104,8 +104,8 @@ export function renderFooter() {
     <div class="footer-grid">
       <!-- Brand + social -->
       <div class="footer-brand">
-        <div class="footer-brand__name">Daily<span>Number</span>Task</div>
-        <p class="footer-brand__desc">Free, fast, privacy-first conversion, calculation &amp; date tools. Works offline. No account needed.</p>
+        <div class="footer-brand__name">DailyNumberTask</div>
+        <p class="logo_name">Free, fast, privacy-first conversion, calculation &amp; date tools. Works offline. No account needed.</p>
         <!-- Social links in footer -->
         <div class="social-links mt-2" aria-label="Follow DailyNumberTask">
           <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer"
