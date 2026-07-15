@@ -105,7 +105,7 @@ export function renderFooter() {
       <!-- Brand + social -->
       <div class="footer-brand">
         <div class="footer-brand__name">DailyNumberTask</div>
-        <p class="logo_name">Free, fast, privacy-first conversion, calculation &amp; date tools. Works offline. No account needed.</p>
+        <p style="color:var(--clr-accent-0);">Free, fast, privacy-first conversion, calculation &amp; date tools. Works offline. No account needed.</p>
         <!-- Social links in footer -->
         <div class="social-links mt-2" aria-label="Follow DailyNumberTask">
           <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer"
@@ -194,8 +194,8 @@ export function renderFooter() {
   <div style="max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;">
     <p style="font-size:var(--sz-sm);margin:0;max-width:none;color:rgba(255,255,255,0.8);">
       We use cookies to serve ads and analyse traffic. By continuing, you agree to our
-      <a href="${prefix}pages/cookie-policy.html" style="color:var(--clr-accent-2);">Cookie Policy</a> and
-      <a href="${prefix}pages/privacy-policy.html" style="color:var(--clr-accent-2);">Privacy Policy</a>.
+      <a href="${prefix}pages/cookie-policy.html" style="color:var(--clr-accent-0);">Cookie Policy</a> and
+      <a href="${prefix}pages/privacy-policy.html" style="color:var(--clr-accent-0);">Privacy Policy</a>.
     </p>
     <div style="display:flex;gap:0.5rem;flex-shrink:0;">
       <button id="cookieDecline" class="btn btn--ghost btn--sm" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2);">Decline</button>
