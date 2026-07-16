@@ -56,22 +56,6 @@
         <h1 style="margin-bottom:0.5rem">Number to Words Converter</h1>
         <p class="lead">Convert any number to words instantly — integers, decimals, currency, cheque writing, ordinal,
           Roman numerals. Indian &amp; international systems supported.</p>
-        <!-- IMPROVEMENT: Quick-access format chips reduce clicks to reach common tasks -->
-        <div class="flex gap-1 mt-2" style="flex-wrap:wrap;" aria-label="Quick format shortcuts">
-          <button class="btn btn--ghost btn--sm quick-fmt" data-fmt="cardinal" data-tab="single"
-            title="Standard number words">Cardinal</button>
-          <button class="btn btn--ghost btn--sm quick-fmt" data-fmt="cheque" data-tab="single"
-            title="Cheque writing format">✔ Cheque</button>
-          <button class="btn btn--ghost btn--sm quick-fmt" data-fmt="currency" data-tab="single"
-            title="Currency words">💰 Currency</button>
-          <button class="btn btn--ghost btn--sm quick-fmt" data-fmt="ordinal" data-tab="single"
-            title="Ordinal numbers">Ordinal</button>
-          <button class="btn btn--ghost btn--sm quick-fmt" data-fmt="roman" data-tab="roman" title="Roman numerals">Ⅻ
-            Roman</button>
-          <button class="btn btn--ghost btn--sm quick-fmt" data-fmt="bulk" data-tab="bulk" title="Batch convert">📋
-            Bulk</button>
-          <a href="./emi-calculator.html" class="btn btn--ghost btn--sm" title="Calculate loan EMIs">🏦 EMI Calc</a>
-        </div>
       </div>
       </div>
     </section>
@@ -345,31 +329,6 @@
 
     document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
       btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-    });
-
-    // ── Quick Format Chips (one-click shortcuts in page intro) ────
-    // IMPROVEMENT: Eliminates 2-3 clicks — user clicks chip, tab + format switch together
-    document.querySelectorAll('.quick-fmt').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const tab = chip.dataset.tab;
-        const fmt = chip.dataset.fmt;
-        switchTab(tab);
-        // Set format selector if on single tab
-        const fmtSel = document.getElementById('format');
-        if (fmtSel && (tab === 'single')) {
-          fmtSel.value = fmt;
-          showCurrencyCtrl();
-          doSingleConvert();
-        }
-        // Scroll tool into view smoothly
-        document.querySelector('.tabs')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        // Focus the relevant input
-        setTimeout(() => {
-          if (tab === 'single') document.getElementById('numberInput')?.focus();
-          else if (tab === 'bulk') document.getElementById('bulkInput')?.focus();
-          else if (tab === 'roman') document.getElementById('romanInput')?.focus();
-        }, 120);
-      });
     });
 
     // ── Single Converter ──────────────────────────────────────────
