@@ -4,6 +4,7 @@ const STATIC_ASSETS = [
   './index.html',
   './pages/tool.html',
   './pages/emi-calculator.html',
+  './pages/margin-calculator.html',
   './pages/about.html',
   './pages/contact.html',
   './pages/privacy-policy.html',

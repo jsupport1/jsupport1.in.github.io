@@ -34,6 +34,33 @@
 .nav-dropdown.open .nav-dropdown-content { display: flex; }
 .nav-dropdown-content .nav-link { margin: 0; display: block; width: 100%; text-align: left; padding: 0.5rem; border-radius: var(--rad-sm); }
 
+.margin-shell { display: flex; justify-content: center; }
+.margin-card { width: 100%; background: linear-gradient(135deg, #ffffff 0%, #f7f9fc 100%); border: 1px solid rgba(8,3,43,0.12); border-radius: 24px; box-shadow: var(--shadow-lg); padding: 1.5rem; }
+.margin-card__header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.margin-card__controls { display: flex; gap: 0.5rem; align-items: center; }
+.margin-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 1.25rem; }
+.margin-form { display: grid; gap: 0.9rem; }
+.margin-field { border: 1px solid rgba(8,3,43,0.15); border-radius: 14px; padding: 0.8rem 0.95rem; }
+.margin-field.field--calculated { background: #eef6ff; border-color: #8dc0ff; }
+.margin-field.field--user { background: #fff; }
+.margin-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.25rem; }
+.margin-results { display: grid; gap: 0.8rem; }
+.margin-result-card { padding: 1rem 1.1rem; border-radius: 16px; background: #fff; border: 1px solid rgba(8,3,43,0.08); box-shadow: var(--shadow-sm); }
+.margin-result-card--profit { border-left: 4px solid var(--clr-success); }
+.margin-result-card--margin { border-left: 4px solid #1d4ed8; }
+.margin-result-card--cost { border-left: 4px solid #2563eb; }
+.margin-result-card--revenue { border-left: 4px solid #0f766e; }
+.margin-result-card__label { font-size: var(--sz-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--clr-ink-3); font-weight: 700; }
+.margin-result-card__value { font-size: var(--sz-xl); font-weight: 700; color: var(--clr-ink); margin-top: 0.2rem; }
+.margin-summary { padding: 0.95rem 1rem; border-radius: 14px; background: var(--clr-success-bg); color: var(--clr-ink); border: 1px solid rgba(45,122,79,0.15); font-size: var(--sz-sm); }
+.faq-list details { border: 1px solid rgba(8,3,43,0.1); border-radius: 12px; padding: 0.8rem 1rem; margin-bottom: 0.7rem; background: #fff; }
+.faq-list summary { cursor: pointer; font-weight: 700; color: var(--clr-ink); }
+.faq-list p { margin-top: 0.4rem; color: var(--clr-ink-2); }
+@media (max-width: 800px) {
+  .margin-grid { grid-template-columns: 1fr; }
+  .margin-card { padding: 1.1rem; }
+}
+
 .footer-grid {
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
   gap: 2rem;

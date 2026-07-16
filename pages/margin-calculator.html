@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Margin Calculator — Profit Margin, Cost & Revenue | DailyNumberTask</title>
+  <meta name="description"
+    content="Free online margin calculator for cost, revenue, profit, and profit margin. Get instant results with live formulas, currency support, and mobile-friendly design.">
+  <meta name="keywords"
+    content="margin calculator, profit margin calculator, cost revenue profit calculator, margin formula, profit calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/pages/margin-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Margin Calculator — DailyNumberTask">
+  <meta property="og:description"
+    content="Calculate cost, revenue, profit, and profit margin instantly with a modern finance calculator.">
+  <meta property="og:url" content="https://dailynumbertask.in/pages/margin-calculator.html">
+  <meta property="og:image" content="https://dailynumbertask.in/icons/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#08032B">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DailyNumberTask Margin Calculator",
+    "url": "https://dailynumbertask.in/pages/margin-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Free online margin calculator for cost, revenue, profit, and profit margin with instant live calculations"
+  }
+  </script>
+  <link rel="stylesheet" href="../css/main.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <div class="container">
+      <div class="ad-slot ad-slot--header" aria-label="Advertisement" aria-hidden="true">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3643864519819772"
+          data-ad-slot="HEADER_AD_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+
+    <section class="section--sm" aria-label="Margin calculator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Margin Calculator</span>
+        </nav>
+        <h2 style="margin-bottom:0.5rem">Margin Calculator</h2>
+        <p class="lead">Calculate cost, revenue, profit, and profit margin instantly with responsive inputs, clear results, and smart live formulas.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container">
+        <div class="margin-shell">
+          <div class="margin-card margin-card--main">
+            <div class="margin-card__header">
+              <div>
+                <span class="label">Finance Toolkit</span>
+                <h2 style="margin:0.2rem 0 0">Profit & Margin Analysis</h2>
+              </div>
+              <div class="margin-card__controls">
+                <label class="sr-only" for="currencySelect">Currency</label>
+                <select class="select" id="currencySelect" aria-label="Currency" style="width:auto">
+                  <option value="USD">$ USD</option>
+                  <option value="EUR">€ EUR</option>
+                  <option value="GBP">£ GBP</option>
+                  <option value="INR">₹ INR</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="margin-grid">
+              <div class="margin-form">
+                <div class="form-group">
+                  <label class="form-label" for="costInput">Cost (COGS)</label>
+                  <input type="number" class="input margin-field" id="costInput" min="0" step="0.01" aria-label="Cost">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="revenueInput">Revenue / Selling Price</label>
+                  <input type="number" class="input margin-field" id="revenueInput" min="0" step="0.01" aria-label="Revenue">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profitInput">Profit</label>
+                  <input type="number" class="input margin-field" id="profitInput" min="0" step="0.01" aria-label="Profit">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="marginInput">Profit Margin (%)</label>
+                  <input type="number" class="input margin-field" id="marginInput" min="0" max="100" step="0.01" aria-label="Profit margin percentage">
+                </div>
+
+                <div class="margin-actions">
+                  <button class="btn btn--primary" id="resetBtn">Reset</button>
+                  <button class="btn btn--ghost" id="copyBtn">📋 Copy Result</button>
+                  <button class="btn btn--ghost" id="shareBtn">🔗 Share</button>
+                </div>
+              </div>
+
+              <div class="margin-results">
+                <div class="margin-result-card margin-result-card--profit">
+                  <div class="margin-result-card__label">Profit</div>
+                  <div class="margin-result-card__value" id="profitResult">—</div>
+                </div>
+                <div class="margin-result-card margin-result-card--margin">
+                  <div class="margin-result-card__label">Profit Margin</div>
+                  <div class="margin-result-card__value" id="marginResult">—</div>
+                </div>
+                <div class="margin-result-card margin-result-card--cost">
+                  <div class="margin-result-card__label">Cost Percentage</div>
+                  <div class="margin-result-card__value" id="costPercentResult">—</div>
+                </div>
+                <div class="margin-result-card margin-result-card--revenue">
+                  <div class="margin-result-card__label">Revenue</div>
+                  <div class="margin-result-card__value" id="revenueResult">—</div>
+                </div>
+                <div class="margin-summary" id="summaryText">
+                  Enter values and the calculator will instantly fill the missing fields.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <article class="card mt-4" aria-labelledby="margin-explanation-title">
+          <h2 id="margin-explanation-title" style="font-size:var(--sz-xl);margin-bottom:0.75rem">Why margin matters</h2>
+          <p class="text-sm">Margin represents the percentage of revenue that remains after subtracting the cost of goods sold. A higher margin indicates better profitability and stronger pricing power.</p>
+        </article>
+
+        <section class="card mt-4" aria-labelledby="margin-faq-title">
+          <h2 id="margin-faq-title" style="font-size:var(--sz-xl);margin-bottom:1rem">Frequently Asked Questions</h2>
+          <div class="faq-list">
+            <details open>
+              <summary>What is profit margin?</summary>
+              <p>Profit margin is the percentage of revenue left after costs are deducted. It shows how efficiently a business turns sales into profit.</p>
+            </details>
+            <details>
+              <summary>How is margin calculated?</summary>
+              <p>Margin is calculated as profit divided by revenue, multiplied by 100.</p>
+            </details>
+            <details>
+              <summary>What is the difference between margin and markup?</summary>
+              <p>Margin is based on revenue, while markup is based on cost. A 50% margin is not the same as a 50% markup.</p>
+            </details>
+            <details>
+              <summary>What is a good profit margin?</summary>
+              <p>It depends on the industry. Retail businesses often target lower margins, while software and services businesses may aim for much higher ones.</p>
+            </details>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+
+    document.getElementById('header-mount').innerHTML = renderHeader('margin');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const costInput = document.getElementById('costInput');
+    const revenueInput = document.getElementById('revenueInput');
+    const profitInput = document.getElementById('profitInput');
+    const marginInput = document.getElementById('marginInput');
+    const currencySelect = document.getElementById('currencySelect');
+    const resetBtn = document.getElementById('resetBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const shareBtn = document.getElementById('shareBtn');
+
+    const profitResult = document.getElementById('profitResult');
+    const marginResult = document.getElementById('marginResult');
+    const costPercentResult = document.getElementById('costPercentResult');
+    const revenueResult = document.getElementById('revenueResult');
+    const summaryText = document.getElementById('summaryText');
+
+    const inputs = [costInput, revenueInput, profitInput, marginInput];
+    let lastEditedField = null;
+
+    function formatCurrency(value, currency) {
+      if (!Number.isFinite(value)) return '—';
+      const locale = currency === 'INR' ? 'en-IN' : currency === 'EUR' ? 'de-DE' : currency === 'GBP' ? 'en-GB' : 'en-US';
+      return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0
+      }).format(value);
+    }
+
+    function formatPercent(value) {
+      if (!Number.isFinite(value)) return '—';
+      return `${value.toFixed(2)}%`;
+    }
+
+    function parseNumber(value) {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function setFieldValue(field, value, mode = 'calculated') {
+      if (field === lastEditedField) return;
+      if (value === null || !Number.isFinite(value)) {
+        field.value = '';
+      } else {
+        field.value = Number.isInteger(value) ? String(value) : value.toFixed(2);
+      }
+      field.classList.toggle('field--calculated', mode === 'calculated');
+      field.classList.toggle('field--user', mode === 'user');
+    }
+
+    function validateField(field) {
+      const value = parseNumber(field.value);
+      if (value !== null && value < 0) {
+        field.value = '';
+      }
+      if (field === marginInput && value !== null && value > 100) {
+        field.value = '100';
+      }
+    }
+
+    function calculate() {
+      const cost = parseNumber(costInput.value);
+      const revenue = parseNumber(revenueInput.value);
+      const profit = parseNumber(profitInput.value);
+      const margin = parseNumber(marginInput.value);
+
+      const hasCost = cost !== null;
+      const hasRevenue = revenue !== null;
+      const hasProfit = profit !== null;
+      const hasMargin = margin !== null;
+
+      let computedProfit = null;
+      let computedRevenue = null;
+      let computedCost = null;
+      let computedMargin = null;
+
+      if (hasCost && hasRevenue) {
+        computedProfit = revenue - cost;
+        computedMargin = revenue > 0 ? (computedProfit / revenue) * 100 : 0;
+      } else if (hasCost && hasProfit) {
+        computedRevenue = cost + profit;
+        computedMargin = computedRevenue > 0 ? (profit / computedRevenue) * 100 : 0;
+      } else if (hasRevenue && hasProfit) {
+        computedCost = revenue - profit;
+        computedMargin = revenue > 0 ? (profit / revenue) * 100 : 0;
+      } else if (hasCost && hasMargin) {
+        const safeMargin = Math.min(Math.max(margin, 0), 100);
+        computedRevenue = safeMargin >= 100 ? Infinity : cost / (1 - safeMargin / 100);
+        computedProfit = computedRevenue - cost;
+      } else if (hasRevenue && hasMargin) {
+        const safeMargin = Math.min(Math.max(margin, 0), 100);
+        computedCost = revenue * (1 - safeMargin / 100);
+        computedProfit = revenue - computedCost;
+      } else if (hasProfit && hasMargin) {
+        const safeMargin = Math.min(Math.max(margin, 0), 100);
+        computedRevenue = safeMargin > 0 ? profit / (safeMargin / 100) : 0;
+        computedCost = computedRevenue - profit;
+      }
+
+      if (computedProfit !== null) setFieldValue(profitInput, computedProfit, 'calculated');
+      if (computedRevenue !== null) setFieldValue(revenueInput, computedRevenue, 'calculated');
+      if (computedCost !== null) setFieldValue(costInput, computedCost, 'calculated');
+      if (computedMargin !== null) setFieldValue(marginInput, computedMargin, 'calculated');
+
+      const finalCost = parseNumber(costInput.value);
+      const finalRevenue = parseNumber(revenueInput.value);
+      const finalProfit = parseNumber(profitInput.value);
+      const finalMargin = parseNumber(marginInput.value);
+      const currency = currencySelect.value;
+
+      const displayProfit = finalProfit ?? (finalRevenue && finalCost ? finalRevenue - finalCost : null);
+      const displayRevenue = finalRevenue ?? (finalCost && finalProfit ? finalCost + finalProfit : null);
+      const displayCost = finalCost ?? (finalRevenue && finalProfit ? finalRevenue - finalProfit : null);
+      const displayMargin = finalMargin ?? (displayRevenue && displayProfit ? (displayProfit / displayRevenue) * 100 : null);
+      const costPercent = displayRevenue && displayRevenue > 0 && displayCost !== null ? (displayCost / displayRevenue) * 100 : 0;
+
+      profitResult.textContent = displayProfit !== null ? formatCurrency(displayProfit, currency) : '—';
+      marginResult.textContent = displayMargin !== null ? formatPercent(displayMargin) : '—';
+      costPercentResult.textContent = displayCost !== null && displayRevenue ? formatPercent(costPercent) : '—';
+      revenueResult.textContent = displayRevenue !== null ? formatCurrency(displayRevenue, currency) : '—';
+
+      if (displayProfit !== null && displayRevenue !== null && displayRevenue > 0) {
+        summaryText.innerHTML = `Profit ${formatCurrency(displayProfit, currency)} · Margin ${formatPercent(displayMargin ?? 0)} · Cost share ${formatPercent(costPercent)}`;
+      } else {
+        summaryText.textContent = 'Enter values and the calculator will instantly fill the missing fields.';
+      }
+    }
+
+    inputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        validateField(input);
+        lastEditedField = input;
+        calculate();
+      });
+      input.addEventListener('focus', () => {
+        lastEditedField = input;
+      });
+    });
+
+    currencySelect.addEventListener('change', calculate);
+
+    resetBtn.addEventListener('click', () => {
+      costInput.value = '';
+      revenueInput.value = '';
+      profitInput.value = '';
+      marginInput.value = '';
+      lastEditedField = null;
+      inputs.forEach((field) => field.classList.remove('field--calculated', 'field--user'));
+      calculate();
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const text = `${summaryText.textContent}\nProfit: ${profitResult.textContent}\nMargin: ${marginResult.textContent}\nCost Percentage: ${costPercentResult.textContent}\nRevenue: ${revenueResult.textContent}`;
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast('Results copied!', 'success');
+      } catch (err) {
+        showToast('Copy failed.', '');
+      }
+    });
+
+    shareBtn.addEventListener('click', async () => {
+      const shareText = `Margin Calculator result: ${summaryText.textContent}`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: 'Margin Calculator', text: shareText, url: window.location.href });
+        } else {
+          await navigator.clipboard.writeText(`${shareText}\n${window.location.href}`);
+          showToast('Share link copied!', 'success');
+        }
+      } catch (err) {
+        showToast('Share cancelled.', '');
+      }
+    });
+
+    calculate();
+  </script>
+</body>
+
+</html>

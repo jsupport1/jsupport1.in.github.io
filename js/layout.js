@@ -30,9 +30,10 @@ export function renderHeader(activePage = '') {
         </div>
       </div>
       <div class="nav-dropdown">
-        <button class="nav-link nav-dropdown-btn ${activePage === 'emi' ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Calculator ▾</button>
+        <button class="nav-link nav-dropdown-btn ${['emi', 'margin'].includes(activePage) ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Calculator ▾</button>
         <div class="nav-dropdown-content">
           <a href="${prefix}pages/emi-calculator.html" class="nav-link ${activePage === 'emi' ? 'active' : ''}" aria-current="${activePage === 'emi' ? 'page' : 'false'}">EMI Calc</a>
+          <a href="${prefix}pages/margin-calculator.html" class="nav-link ${activePage === 'margin' ? 'active' : ''}" aria-current="${activePage === 'margin' ? 'page' : 'false'}">Margin Calc</a>
         </div>
       </div>
       <div class="nav-dropdown">
@@ -127,6 +128,7 @@ export function renderFooter() {
           <li><a href="${prefix}pages/tool.html">Roman Numerals</a></li>
           <li><a href="${prefix}pages/tool.html">Bulk Converter</a></li>
           <li><a href="${prefix}pages/emi-calculator.html">EMI Calculator</a></li>
+          <li><a href="${prefix}pages/margin-calculator.html">Margin Calculator</a></li>
           <li><a href="${prefix}unit/index.html">Unit Converter</a></li>
           <li><a href="${prefix}currency/index.html">Currency Converter</a></li>
           <li><a href="${prefix}base/index.html">Base Converter</a></li>
