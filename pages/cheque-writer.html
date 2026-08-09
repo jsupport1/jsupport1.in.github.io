@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheque Writer — Convert Amount to Words | DailyNumberTask</title>
+  <meta name="description" content="Write cheque amounts in words instantly. Supports INR, USD, EUR and GBP with cheque-ready formatting and currency units.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/pages/cheque-writer.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cheque Writer — DailyNumberTask">
+  <meta property="og:description" content="Create cheque-ready amounts in words for INR, USD, EUR and GBP. The cheque writer includes amount formatting and 'Only' suffix.">
+  <meta property="og:url" content="https://dailynumbertask.in/pages/cheque-writer.html">
+  <meta property="og:image" content="https://dailynumbertask.in/icons/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .tool-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2rem;
+      margin: 1.5rem 0;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 760px) {
+      .tool-grid { grid-template-columns: 1fr; }
+    }
+    .result-card {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.15);
+      border-radius: var(--rad-lg);
+      padding: 1.75rem;
+      min-height: 220px;
+    }
+    .result-card__title {
+      font-size: var(--sz-sm);
+      color: var(--clr-ink-3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .result-card__text {
+      font-size: var(--sz-lg);
+      line-height: 1.6;
+      color: var(--clr-ink);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <section class="section--sm" aria-label="Cheque Writer introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">Cheque Writer</span>
+        </nav>
+        <h2 style="margin-bottom:0.5rem">Cheque Writer</h2>
+        <p class="lead">Convert any amount into cheque-ready words with currency units and the 'Only' suffix, formatted for India and international currencies.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="tool-card">
+          <div class="control-row">
+            <div style="display:grid;gap:0.75rem;">
+              <label class="form-label" for="chequeAmount">Amount</label>
+              <input type="text" id="chequeAmount" class="input" placeholder="e.g. 12345.67" aria-label="Amount for cheque writer">
+            </div>
+            <div style="display:grid;gap:0.75rem;min-width:180px;">
+              <label class="form-label" for="chequeCurrency">Currency</label>
+              <select class="select" id="chequeCurrency">
+                <option value="INR">₹ INR</option>
+                <option value="USD">$ USD</option>
+                <option value="EUR">€ EUR</option>
+                <option value="GBP">£ GBP</option>
+              </select>
+            </div>
+            <div style="display:grid;gap:0.75rem;min-width:180px;">
+              <label class="form-label" for="chequeLanguage">Language</label>
+              <select class="select" id="chequeLanguage">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin-top:0.35rem;">
+              <button class="btn btn--primary btn--sm" id="chequeCopyBtn">📋 Copy</button>
+              <button class="btn btn--ghost btn--sm" id="chequeResetBtn">Reset</button>
+            </div>
+          </div>
+
+          <div class="result-card" style="margin-top:1.5rem;" aria-live="polite">
+            <div class="result-card__title">Cheque Amount</div>
+            <div class="result-card__text" id="chequeResult">Your result will appear here…</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+    import { convertNumber } from '../js/engine.js';
+    document.getElementById('header-mount').innerHTML = renderHeader('cheque-writer');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const chequeAmount = document.getElementById('chequeAmount');
+    const chequeCurrency = document.getElementById('chequeCurrency');
+    const chequeLanguage = document.getElementById('chequeLanguage');
+    const chequeResult = document.getElementById('chequeResult');
+    const chequeCopyBtn = document.getElementById('chequeCopyBtn');
+    const chequeResetBtn = document.getElementById('chequeResetBtn');
+
+    function renderCheque() {
+      const value = chequeAmount.value.trim();
+      if (!value) {
+        chequeResult.textContent = 'Your result will appear here…';
+        return;
+      }
+      try {
+        const words = convertNumber(value, {
+          format: 'cheque',
+          currency: chequeCurrency.value,
+          system: 'international',
+          caseType: 'title',
+          language: chequeLanguage.value,
+        });
+        chequeResult.textContent = words;
+      } catch (error) {
+        chequeResult.textContent = error.message;
+      }
+    }
+
+    chequeAmount.addEventListener('input', renderCheque);
+    chequeCurrency.addEventListener('change', renderCheque);
+    chequeCopyBtn.addEventListener('click', () => {
+      const text = chequeResult.textContent;
+      if (!text || text === 'Your result will appear here…') return;
+      navigator.clipboard.writeText(text).then(() => showToast('Cheque text copied!', 'success'));
+    });
+    chequeResetBtn.addEventListener('click', () => {
+      chequeAmount.value = '';
+      chequeResult.textContent = 'Your result will appear here…';
+      chequeAmount.focus();
+    });
+    renderCheque();
+  </script>
+</body>
+</html>

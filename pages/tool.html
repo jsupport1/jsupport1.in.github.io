@@ -80,6 +80,7 @@
           <div class="tool-hero">
             <div class="tool-hero__header">
               <span class="tool-hero__title">🔢 Number → Words</span>
+              <p class="text-sm text-muted" style="margin:0.35rem 0 0;">Supports English and Hindi word output — choose the language dropdown to switch.</p>
               <!-- IMPROVEMENT: Controls grouped with visible labels for discoverability -->
               <div class="tool-hero__controls">
                 <label class="sr-only" for="system">Numbering system</label>
@@ -101,6 +102,11 @@
                   <option value="USD">$ USD</option>
                   <option value="EUR">€ EUR</option>
                   <option value="GBP">£ GBP</option>
+                </select>
+                <label class="sr-only" for="language">Language</label>
+                <select class="select" id="language" aria-label="Output language" style="width:auto">
+                  <option value="en">English</option>
+                  <option value="hi">Hindi</option>
                 </select>
                 <label class="sr-only" for="caseType">Output case</label>
                 <select class="select" id="caseType" aria-label="Output case" style="width:auto">
@@ -344,6 +350,7 @@
     const systemSel = document.getElementById('system');
     const formatSel = document.getElementById('format');
     const currencySel = document.getElementById('currency');
+    const languageSel = document.getElementById('language');
     const caseSel = document.getElementById('caseType');
     const charCount = document.getElementById('charCount');
 
@@ -377,6 +384,7 @@
           format: formatSel.value,
           caseType: caseSel.value,
           currency: currencySel.value,
+          language: languageSel.value,
         });
         resultText.textContent = words;
         mainResult.classList.add('has-result');
@@ -388,7 +396,7 @@
       }
     }
 
-    [numberInput, systemSel, formatSel, currencySel, caseSel].forEach(el => {
+    [numberInput, systemSel, formatSel, currencySel, languageSel, caseSel].forEach(el => {
       el.addEventListener('change', doSingleConvert);
       el.addEventListener('input', doSingleConvert);
     });

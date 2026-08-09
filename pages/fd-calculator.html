@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fixed Deposit Calculator — FD Calculator | DailyNumberTask</title>
+  <meta name="description" content="Calculate fixed deposit maturity amount and interest for any principal, tenure and rate. Use our FD calculator with quarterly or annual compounding.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/pages/fd-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Fixed Deposit Calculator — DailyNumberTask">
+  <meta property="og:description" content="Free fixed deposit calculator for maturity value, total interest and effective yield. Supports quarterly and annual compounding.">
+  <meta property="og:url" content="https://dailynumbertask.in/pages/fd-calculator.html">
+  <meta property="og:image" content="https://dailynumbertask.in/icons/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .calculator-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2rem;
+      margin: 1.5rem 0;
+    }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 760px) {
+      .calculator-grid { grid-template-columns: 1fr; }
+    }
+    .fd-result-card {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.15);
+      border-radius: var(--rad-lg);
+      padding: 1.75rem;
+      text-align: center;
+    }
+    .fd-value {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 0.5rem 0;
+      color: var(--clr-accent);
+    }
+    .fd-label {
+      font-size: var(--sz-sm);
+      color: var(--clr-ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .fd-schedule {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .fd-note {
+      margin-top: 1rem;
+      color: var(--clr-ink-2);
+      line-height: 1.7;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <section class="section--sm" aria-label="Fixed Deposit Calculator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">FD Calculator</span>
+        </nav>
+        <h2 style="margin-bottom:0.5rem">Fixed Deposit Calculator</h2>
+        <p class="lead">Compute maturity value and total interest for your fixed deposit using annual or quarterly compounding.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="calculator-card">
+          <div class="flex" style="justify-content:space-between;align-items:start;gap:1rem;flex-wrap:wrap;">
+            <div>
+              <div class="label">Compounding frequency</div>
+              <select class="select" id="fdFrequency" style="width:auto;">
+                <option value="annual">Annual</option>
+                <option value="quarterly">Quarterly</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin-top:0.5rem;">
+              <button class="btn btn--primary btn--sm" id="fdResetBtn">Reset</button>
+              <button class="btn btn--ghost btn--sm" id="fdCopyBtn">📋 Copy Result</button>
+            </div>
+          </div>
+
+          <div class="calculator-grid" style="margin-top:1.75rem;">
+            <div>
+              <div class="form-group">
+                <label for="fdPrincipal">Principal Amount</label>
+                <input type="number" class="input" id="fdPrincipal" min="1" step="0.01" placeholder="e.g. 100000" aria-label="Principal amount">
+              </div>
+              <div class="form-group">
+                <label for="fdRate">Annual Interest Rate (%)</label>
+                <input type="number" class="input" id="fdRate" min="0" step="0.01" placeholder="e.g. 7.5" aria-label="Interest rate">
+              </div>
+              <div class="form-group">
+                <label for="fdYears">Tenure (years)</label>
+                <input type="number" class="input" id="fdYears" min="0.1" step="0.1" placeholder="e.g. 3" aria-label="Tenure in years">
+              </div>
+            </div>
+            <div class="fd-result-card" aria-live="polite">
+              <div class="fd-label">Maturity Value</div>
+              <div class="fd-value" id="fdMaturity">—</div>
+              <div class="fd-label">Total Interest</div>
+              <div class="fd-value" id="fdInterest">—</div>
+              <div class="fd-label">Effective Annual Yield</div>
+              <div class="fd-value" id="fdYield">—</div>
+              <div class="fd-schedule" id="fdSchedule"></div>
+              <p class="fd-note">Results are calculated using compound interest and rounded to two decimal places. Use this as an estimate for planning your savings.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+    document.getElementById('header-mount').innerHTML = renderHeader('fd-calculator');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const fdFrequency = document.getElementById('fdFrequency');
+    const fdPrincipal = document.getElementById('fdPrincipal');
+    const fdRate = document.getElementById('fdRate');
+    const fdYears = document.getElementById('fdYears');
+    const fdMaturity = document.getElementById('fdMaturity');
+    const fdInterest = document.getElementById('fdInterest');
+    const fdYield = document.getElementById('fdYield');
+    const fdSchedule = document.getElementById('fdSchedule');
+    const fdCopyBtn = document.getElementById('fdCopyBtn');
+    const fdResetBtn = document.getElementById('fdResetBtn');
+
+    function formatAmount(value) {
+      return new Intl.NumberFormat('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+    }
+
+    function calculateFD() {
+      const principal = Number(fdPrincipal.value);
+      const rate = Number(fdRate.value) / 100;
+      const years = Number(fdYears.value);
+      if (principal <= 0 || rate < 0 || years <= 0) {
+        fdMaturity.textContent = '—';
+        fdInterest.textContent = '—';
+        fdYield.textContent = '—';
+        fdSchedule.innerHTML = '';
+        return;
+      }
+
+      const periods = fdFrequency.value === 'quarterly' ? 4 : 1;
+      const n = periods * years;
+      const r = rate / periods;
+      const maturity = principal * Math.pow(1 + r, n);
+      const interest = maturity - principal;
+      const effective = Math.pow(1 + r, periods) - 1;
+
+      fdMaturity.textContent = `₹ ${formatAmount(maturity)}`;
+      fdInterest.textContent = `₹ ${formatAmount(interest)}`;
+      fdYield.textContent = `${(effective * 100).toFixed(2)}%`;
+
+      const scheduleCount = Math.min(n, 4);
+      const scheduleItems = [];
+      for (let i = 1; i <= scheduleCount; i += 1) {
+        const value = principal * Math.pow(1 + r, i);
+        scheduleItems.push(`<div><strong>Year ${Math.round(i / periods * 1)}:</strong> ₹ ${formatAmount(value)}</div>`);
+      }
+      fdSchedule.innerHTML = scheduleItems.join('');
+    }
+
+    function resetFD() {
+      fdFrequency.value = 'annual';
+      fdPrincipal.value = '';
+      fdRate.value = '';
+      fdYears.value = '';
+      calculateFD();
+      fdPrincipal.focus();
+    }
+
+    [fdFrequency, fdPrincipal, fdRate, fdYears].forEach(el => el.addEventListener('input', calculateFD));
+    fdCopyBtn.addEventListener('click', () => {
+      if (fdMaturity.textContent === '—') return;
+      const text = `Maturity: ${fdMaturity.textContent}, Interest: ${fdInterest.textContent}, Yield: ${fdYield.textContent}`;
+      navigator.clipboard.writeText(text).then(() => showToast('FD result copied!', 'success'));
+    });
+    fdResetBtn.addEventListener('click', resetFD);
+    calculateFD();
+  </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "name": "DailyNumberTask",
   "short_name": "NumTask",
-  "description": "Free number to words converter — integers, currency, cheque writing, Roman numerals",
+  "description": "Convert Numbers into Words Quickly and Easily — integers, currency, cheque writing, Roman numerals",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

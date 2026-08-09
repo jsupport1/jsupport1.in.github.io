@@ -21,19 +21,22 @@ export function renderHeader(activePage = '') {
     <nav class="site-nav" id="siteNav" role="navigation" aria-label="Main navigation">
       <a href="${prefix}index.html" class="nav-link ${activePage === 'home' ? 'active' : ''}" aria-current="${activePage === 'home' ? 'page' : 'false'}">Home</a>
       <div class="nav-dropdown">
-        <button class="nav-link nav-dropdown-btn ${['tool', 'unit', 'currency', 'base'].includes(activePage) ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Number ▾</button>
+        <button class="nav-link nav-dropdown-btn ${['tool', 'unit', 'currency', 'base', 'cheque-writer'].includes(activePage) ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
         <div class="nav-dropdown-content">
           <a href="${prefix}pages/tool.html" class="nav-link ${activePage === 'tool' ? 'active' : ''}" aria-current="${activePage === 'tool' ? 'page' : 'false'}">Converter</a>
           <a href="${prefix}unit/index.html" class="nav-link ${activePage === 'unit' ? 'active' : ''}" aria-current="${activePage === 'unit' ? 'page' : 'false'}">Unit Converter</a>
           <a href="${prefix}currency/index.html" class="nav-link ${activePage === 'currency' ? 'active' : ''}" aria-current="${activePage === 'currency' ? 'page' : 'false'}">Currency Converter</a>
           <a href="${prefix}base/index.html" class="nav-link ${activePage === 'base' ? 'active' : ''}" aria-current="${activePage === 'base' ? 'page' : 'false'}">Base Converter</a>
+          <a href="${prefix}pages/cheque-writer.html" class="nav-link ${activePage === 'cheque-writer' ? 'active' : ''}" aria-current="${activePage === 'cheque-writer' ? 'page' : 'false'}">Cheque Writer</a>
         </div>
       </div>
       <div class="nav-dropdown">
-        <button class="nav-link nav-dropdown-btn ${['emi', 'margin'].includes(activePage) ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Calculator ▾</button>
+        <button class="nav-link nav-dropdown-btn ${['emi', 'margin', 'bmi-calculator', 'fd-calculator'].includes(activePage) ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Calculator ▾</button>
         <div class="nav-dropdown-content">
           <a href="${prefix}pages/emi-calculator.html" class="nav-link ${activePage === 'emi' ? 'active' : ''}" aria-current="${activePage === 'emi' ? 'page' : 'false'}">EMI Calc</a>
           <a href="${prefix}pages/margin-calculator.html" class="nav-link ${activePage === 'margin' ? 'active' : ''}" aria-current="${activePage === 'margin' ? 'page' : 'false'}">Margin Calc</a>
+          <a href="${prefix}pages/fd-calculator.html" class="nav-link ${activePage === 'fd-calculator' ? 'active' : ''}" aria-current="${activePage === 'fd-calculator' ? 'page' : 'false'}">FD Calc</a>
+          <a href="${prefix}pages/bmi-calculator.html" class="nav-link ${activePage === 'bmi-calculator' ? 'active' : ''}" aria-current="${activePage === 'bmi-calculator' ? 'page' : 'false'}">BMI Calc</a>
         </div>
       </div>
       <div class="nav-dropdown">
@@ -124,10 +127,12 @@ export function renderFooter() {
         <ul class="footer-links">
           <li><a href="${prefix}pages/tool.html">Number to Words</a></li>
           <li><a href="${prefix}pages/tool.html">Currency Words</a></li>
-          <li><a href="${prefix}pages/tool.html">Cheque Writing</a></li>
+          <li><a href="${prefix}pages/cheque-writer.html">Cheque Writer</a></li>
           <li><a href="${prefix}pages/tool.html">Roman Numerals</a></li>
           <li><a href="${prefix}pages/tool.html">Bulk Converter</a></li>
           <li><a href="${prefix}pages/emi-calculator.html">EMI Calculator</a></li>
+          <li><a href="${prefix}pages/fd-calculator.html">FD Calculator</a></li>
+          <li><a href="${prefix}pages/bmi-calculator.html">BMI Calculator</a></li>
           <li><a href="${prefix}pages/margin-calculator.html">Margin Calculator</a></li>
           <li><a href="${prefix}unit/index.html">Unit Converter</a></li>
           <li><a href="${prefix}currency/index.html">Currency Converter</a></li>

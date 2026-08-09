@@ -4,6 +4,41 @@ const ONES = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
   'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
 const TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty',
   'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+const HINDI_DIGITS = ['', 'एक', 'दो', 'तीन', 'चार', 'पांच', 'छह', 'सात', 'आठ', 'नौ'];
+const HINDI_WORDS_0_99 = [
+  'शून्य','एक','दो','तीन','चार','पांच','छह','सात','आठ','नौ',
+  'दस','ग्यारह','बारह','तेरह','चौदह','पंद्रह','सोलह','सत्रह','अठारह','उन्नीस',
+  'बीस','इक्कीस','बाईस','तेईस','चौबीस','पच्चीस','छब्बीस','सत्ताईस','अट्ठाईस','उनतीस',
+  'तीस','इकतीस','बत्तीस','तैंतीस','चौंतीस','पैंतीस','छत्तीस','सैंतीस','अड़तीस','उनतालीस',
+  'चालीस','इकतालीस','बयालीस','तैंतालीस','चवालीस','पैंतालीस','छियालीस','सैंतालीस','अड़तालीस','उनचास',
+  'पचास','इक्यावन','बावन','तिरपन','चौवन','पचपन','छप्पन','सत्तावन','अट्ठावन','उनसठ',
+  'साठ','इकसठ','बासठ','तिरसठ','चौसठ','पैंसठ','छियासठ','सड़सठ','उस्सठ','उनहत्तर',
+  'सत्तर','इकहत्तर','बहत्तर','तिहत्तर','चौहत्तर','पचहत्तर','छिहत्तर','सत्तहत्तर','अठहत्तर','उन्यासी',
+  'अस्सी','इक्यासी','बयासी','तिरासी','चौरासी','पचासी','छियासी','सत्तासी','अट्ठासी','नवासी',
+  'नब्बे','इक्यानबे','बानवे','तिरानवे','चौरानवे','पंचानवे','छियानवे','सत्तानवे','अठानवे','निन्यानवे'
+];
+const HINDI_INTERNATIONAL_SCALE = [
+  { value: 1_000_000_000_000_000_000n, name: 'क्विंटिलियन' },
+  { value: 1_000_000_000_000_000n,    name: 'क्वाड्रिलियन' },
+  { value: 1_000_000_000_000n,        name: 'ट्रिलियन' },
+  { value: 1_000_000_000n,            name: 'बिलियन' },
+  { value: 1_000_000n,                name: 'मिलियन' },
+  { value: 1_000n,                    name: 'हज़ार' },
+];
+const HINDI_INDIAN_SCALE = [
+  { value: 10_000_000_000_000n, name: 'लाख करोड़' },
+  { value: 100_000_000_000n,    name: 'हज़ार करोड़' },
+  { value: 10_000_000_000n,     name: 'सौ करोड़' },
+  { value: 1_000_000_000n,      name: 'सौ करोड़' },
+  { value: 10_000_000n,         name: 'करोड़' },
+  { value: 100_000n,            name: 'लाख' },
+  { value: 1_000n,              name: 'हज़ार' },
+  { value: 100n,                name: 'सौ' },
+];
+const HINDI_POINT = 'दशमलव';
+const HINDI_NEGATIVE = 'ऋणात्मक';
+const HINDI_ZERO = 'शून्य';
+const HINDI_HUNDRED = 'सौ';
 const INTERNATIONAL_SCALE = [
   { value: 1_000_000_000_000_000_000n, name: 'Quintillion' },
   { value: 1_000_000_000_000_000n,    name: 'Quadrillion' },
@@ -32,8 +67,17 @@ const ROMAN_MAP = [
   [1, 'I']
 ];
 const ROMAN_PARSE = { I:1, V:5, X:10, L:50, C:100, D:500, M:1000 };
-function threeDigitWords(n) {
+function threeDigitWords(n, lang = 'en') {
   if (n === 0) return '';
+  if (lang === 'hi') {
+    if (n >= 100) {
+      let result = HINDI_WORDS_0_99[Math.floor(n / 100)] + ' ' + HINDI_HUNDRED;
+      const remainder = n % 100;
+      if (remainder > 0) result += ' ' + HINDI_WORDS_0_99[remainder];
+      return result;
+    }
+    return HINDI_WORDS_0_99[n];
+  }
   let result = '';
   if (n >= 100) {
     result += ONES[Math.floor(n / 100)] + ' Hundred';
@@ -56,37 +100,27 @@ function applyCase(str, caseType) {
     default: return str;
   }
 }
-function intToWordsInternational(bigN) {
-  if (bigN === 0n) return 'Zero';
+function intToWordsInternational(bigN, lang = 'en') {
+  if (bigN === 0n) return lang === 'hi' ? HINDI_ZERO : 'Zero';
   const parts = [];
-  for (const { value, name } of INTERNATIONAL_SCALE) {
+  const scale = lang === 'hi' ? HINDI_INTERNATIONAL_SCALE : INTERNATIONAL_SCALE;
+  for (const { value, name } of scale) {
     if (bigN >= value) {
       const chunk = bigN / value;
-      parts.push(intToWordsInternational(chunk) + ' ' + name);
+      parts.push(intToWordsInternational(chunk, lang) + ' ' + name);
       bigN %= value;
     }
   }
   if (bigN > 0n) {
-    parts.push(threeDigitWords(Number(bigN)));
+    parts.push(threeDigitWords(Number(bigN), lang));
   }
   return parts.join(', ');
 }
-function intToWordsIndian(bigN) {
-  if (bigN === 0n) return 'Zero';
-  if (bigN < 100n) return threeDigitWords(Number(bigN));
+function intToWordsIndian(bigN, lang = 'en') {
+  if (bigN === 0n) return lang === 'hi' ? HINDI_ZERO : 'Zero';
+  if (bigN < 100n) return threeDigitWords(Number(bigN), lang);
   const parts = [];
-  const scales = [
-    { v: 10_000_000_000_000n, n: 'Lakh Crore' },
-    { v: 1_000_000_000_000n,  n: 'Thousand Crore' },
-    { v: 100_000_000_000n,    n: 'Hundred Crore' },
-    { v: 10_000_000_000n,     n: 'Ten Crore' },
-    { v: 1_000_000_000n,      n: 'Hundred Crore' },
-    { v: 100_000_000n,        n: 'Ten Crore' },
-    { v: 10_000_000n,         n: 'Crore' },
-    { v: 100_000n,            n: 'Lakh' },
-    { v: 1_000n,              n: 'Thousand' },
-    { v: 100n,                n: 'Hundred' },
-  ];
+  const scale = lang === 'hi' ? HINDI_INDIAN_SCALE : INDIAN_SCALE;
   const crore    = bigN / 10_000_000n;
   bigN          %= 10_000_000n;
   const lakh     = bigN / 100_000n;
@@ -95,11 +129,11 @@ function intToWordsIndian(bigN) {
   bigN          %= 1_000n;
   const hundred  = bigN / 100n;
   const rest     = bigN % 100n;
-  if (crore > 0n)    parts.push(intToWordsIndian(crore) + ' Crore');
-  if (lakh > 0n)     parts.push(threeDigitWords(Number(lakh)) + ' Lakh');
-  if (thousand > 0n) parts.push(threeDigitWords(Number(thousand)) + ' Thousand');
-  if (hundred > 0n)  parts.push(ONES[Number(hundred)] + ' Hundred');
-  if (rest > 0n)     parts.push(threeDigitWords(Number(rest)));
+  if (crore > 0n)    parts.push(intToWordsIndian(crore, lang) + ' ' + (lang === 'hi' ? 'करोड़' : 'Crore'));
+  if (lakh > 0n)     parts.push(threeDigitWords(Number(lakh), lang) + ' ' + (lang === 'hi' ? 'लाख' : 'Lakh'));
+  if (thousand > 0n) parts.push(threeDigitWords(Number(thousand), lang) + ' ' + (lang === 'hi' ? 'हज़ार' : 'Thousand'));
+  if (hundred > 0n)  parts.push((lang === 'hi' ? HINDI_WORDS_0_99[Number(hundred)] : ONES[Number(hundred)]) + ' ' + (lang === 'hi' ? 'सौ' : 'Hundred'));
+  if (rest > 0n)     parts.push(threeDigitWords(Number(rest), lang));
   return parts.join(' ');
 }
 export function convertNumber(input, options = {}) {
@@ -108,6 +142,7 @@ export function convertNumber(input, options = {}) {
     format = 'cardinal',      // 'cardinal' | 'ordinal' | 'currency' | 'cheque' | 'roman'
     caseType = 'title',       // 'title' | 'upper' | 'lower'
     currency = 'USD',
+    language = 'en',
     jsonMode = false,
   } = options;
   input = String(input).trim();
@@ -124,11 +159,16 @@ export function convertNumber(input, options = {}) {
     throw new Error('Invalid number format');
   }
   const bigInt = BigInt(intPart);
+  const lang = language === 'hi' ? 'hi' : 'en';
   const fn = system === 'indian' ? intToWordsIndian : intToWordsInternational;
-  let words = fn(bigInt);
+  let words = fn(bigInt, lang);
   let decWords = '';
   if (decPart !== undefined) {
-    decWords = 'Point ' + [...decPart].map(d => ONES[parseInt(d)] || 'Zero').join(' ');
+    const digitWords = [...decPart].map(d => {
+      const idx = parseInt(d, 10);
+      return lang === 'hi' ? HINDI_DIGITS[idx] || HINDI_ZERO : ONES[idx] || 'Zero';
+    }).join(' ');
+    decWords = (lang === 'hi' ? HINDI_POINT : 'Point') + ' ' + digitWords;
   }
   let result = '';
   switch (format) {
@@ -145,7 +185,7 @@ export function convertNumber(input, options = {}) {
       result = formatCheque(words, decPart, currency);
       break;
   }
-  if (isNegative) result = 'Negative ' + result;
+  if (isNegative) result = (lang === 'hi' ? HINDI_NEGATIVE : 'Negative') + ' ' + result;
   result = applyCase(result, caseType);
   if (jsonMode) {
     return JSON.stringify({
@@ -153,6 +193,7 @@ export function convertNumber(input, options = {}) {
       words: result,
       system,
       format,
+      language: lang,
       caseType,
       timestamp: new Date().toISOString(),
     }, null, 2);

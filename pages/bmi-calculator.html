@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Calculator — Body Mass Index Calculator | DailyNumberTask</title>
+  <meta name="description" content="Calculate your BMI instantly with metric or imperial units. Get healthy BMI categories and body composition guidance online for free.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/pages/bmi-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BMI Calculator — DailyNumberTask">
+  <meta property="og:description" content="Free BMI calculator with metric and imperial units. Find your body mass index and health category instantly.">
+  <meta property="og:url" content="https://dailynumbertask.in/pages/bmi-calculator.html">
+  <meta property="og:image" content="https://dailynumbertask.in/icons/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#C84B2F">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .calculator-card {
+      background: var(--clr-surface);
+      border: 1px solid var(--clr-border);
+      border-radius: var(--rad-xl);
+      box-shadow: var(--shadow-lg);
+      padding: 2rem;
+      margin: 1.5rem 0;
+    }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 760px) {
+      .calculator-grid { grid-template-columns: 1fr; }
+    }
+    .metric-group, .imperial-group {
+      display: grid;
+      gap: 1rem;
+    }
+    .bmi-result-card {
+      background: var(--clr-accent-bg);
+      border: 1px solid rgba(200,75,47,0.15);
+      border-radius: var(--rad-lg);
+      padding: 1.75rem;
+      text-align: center;
+    }
+    .bmi-value {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 0.5rem 0;
+      color: var(--clr-accent);
+    }
+    .bmi-category {
+      font-size: var(--sz-lg);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .bmi-note {
+      margin-top: 1rem;
+      color: var(--clr-ink-2);
+      line-height: 1.7;
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3643864519819772" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="header-mount"></div>
+
+  <main id="main-content">
+    <section class="section--sm" aria-label="BMI Calculator introduction">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">BMI Calculator</span>
+        </nav>
+        <h2 style="margin-bottom:0.5rem">BMI Calculator</h2>
+        <p class="lead">Quickly calculate your Body Mass Index using metric or imperial units, then view your BMI category and healthy range.</p>
+      </div>
+    </section>
+
+    <section class="section--sm">
+      <div class="container container--narrow">
+        <div class="calculator-card">
+          <div class="flex" style="justify-content:space-between;align-items:start;gap:1rem;flex-wrap:wrap;">
+            <div>
+              <div class="label">Unit System</div>
+              <select class="select" id="bmiSystem" style="width:auto;">
+                <option value="metric">Metric (kg / cm)</option>
+                <option value="imperial">Imperial (lbs / ft + in)</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;margin-top:0.5rem;">
+              <button class="btn btn--primary btn--sm" id="bmiResetBtn">Reset</button>
+              <button class="btn btn--ghost btn--sm" id="bmiCopyBtn">📋 Copy Result</button>
+            </div>
+          </div>
+
+          <div class="calculator-grid" style="margin-top:1.75rem;">
+            <div>
+              <div class="form-group">
+                <label for="weightInput">Weight</label>
+                <input type="number" class="input" id="weightInput" min="1" step="0.1" placeholder="e.g. 70" aria-label="Weight input">
+              </div>
+              <div class="metric-group" id="metricInputs">
+                <div class="form-group">
+                  <label for="heightCmInput">Height (cm)</label>
+                  <input type="number" class="input" id="heightCmInput" min="50" step="0.1" placeholder="e.g. 175" aria-label="Height in centimeters">
+                </div>
+              </div>
+              <div class="imperial-group" id="imperialInputs" style="display:none;">
+                <div class="form-group">
+                  <label for="heightFtInput">Height (ft)</label>
+                  <input type="number" class="input" id="heightFtInput" min="1" step="1" placeholder="5" aria-label="Height in feet">
+                </div>
+                <div class="form-group">
+                  <label for="heightInInput">Height (in)</label>
+                  <input type="number" class="input" id="heightInInput" min="0" max="11" step="1" placeholder="8" aria-label="Height in inches">
+                </div>
+              </div>
+            </div>
+            <div class="bmi-result-card" aria-live="polite">
+              <div class="bmi-result-title" style="font-size:var(--sz-sm);font-weight:700;color:var(--clr-ink-3);letter-spacing:0.08em;text-transform:uppercase;">Your BMI Result</div>
+              <div class="bmi-value" id="bmiValue">—</div>
+              <div class="bmi-category" id="bmiCategory">Enter your details</div>
+              <p class="text-sm" id="bmiRangeText">Healthy BMI range: 18.5 — 24.9</p>
+              <p class="bmi-note" id="bmiAdvice">BMI is a useful screening tool but does not replace medical advice. Use this as a quick estimate.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-mount"></div>
+
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout, showToast } from '../js/layout.js';
+    document.getElementById('header-mount').innerHTML = renderHeader('bmi-calculator');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+
+    const bmiSystem = document.getElementById('bmiSystem');
+    const weightInput = document.getElementById('weightInput');
+    const heightCmInput = document.getElementById('heightCmInput');
+    const heightFtInput = document.getElementById('heightFtInput');
+    const heightInInput = document.getElementById('heightInInput');
+    const metricInputs = document.getElementById('metricInputs');
+    const imperialInputs = document.getElementById('imperialInputs');
+    const bmiValue = document.getElementById('bmiValue');
+    const bmiCategory = document.getElementById('bmiCategory');
+    const bmiRangeText = document.getElementById('bmiRangeText');
+    const bmiAdvice = document.getElementById('bmiAdvice');
+    const bmiCopyBtn = document.getElementById('bmiCopyBtn');
+    const bmiResetBtn = document.getElementById('bmiResetBtn');
+
+    function formatBMI(value) {
+      return value.toFixed(1);
+    }
+
+    function getCategory(bmi) {
+      if (bmi < 18.5) return 'Underweight';
+      if (bmi < 25) return 'Normal weight';
+      if (bmi < 30) return 'Overweight';
+      if (bmi < 35) return 'Obesity Class I';
+      if (bmi < 40) return 'Obesity Class II';
+      return 'Obesity Class III';
+    }
+
+    function updateInputs() {
+      const system = bmiSystem.value;
+      metricInputs.style.display = system === 'metric' ? 'grid' : 'none';
+      imperialInputs.style.display = system === 'imperial' ? 'grid' : 'none';
+      calculateBMI();
+    }
+
+    function calculateBMI() {
+      const weight = Number(weightInput.value);
+      if (weight <= 0) {
+        bmiValue.textContent = '—';
+        bmiCategory.textContent = 'Enter your details';
+        bmiRangeText.textContent = 'Healthy BMI range: 18.5 — 24.9';
+        bmiAdvice.textContent = 'BMI is a useful screening tool but does not replace medical advice. Use this as a quick estimate.';
+        return;
+      }
+
+      let bmi = 0;
+      if (bmiSystem.value === 'metric') {
+        const heightCm = Number(heightCmInput.value);
+        if (heightCm <= 0) return;
+        const heightM = heightCm / 100;
+        bmi = weight / (heightM * heightM);
+      } else {
+        const feet = Number(heightFtInput.value);
+        const inches = Number(heightInInput.value);
+        const totalInches = feet * 12 + inches;
+        if (totalInches <= 0) return;
+        bmi = 703 * weight / (totalInches * totalInches);
+      }
+
+      if (!Number.isFinite(bmi) || bmi <= 0) return;
+      const category = getCategory(bmi);
+      bmiValue.textContent = formatBMI(bmi);
+      bmiCategory.textContent = category;
+      bmiRangeText.textContent = 'Healthy BMI range: 18.5 — 24.9';
+      bmiAdvice.textContent = category === 'Normal weight'
+        ? 'Great job! Keep maintaining a balanced diet and active lifestyle.'
+        : 'Use this value as a guideline and consult a healthcare professional for personalized advice.';
+    }
+
+    function resetForm() {
+      bmiSystem.value = 'metric';
+      weightInput.value = '';
+      heightCmInput.value = '';
+      heightFtInput.value = '';
+      heightInInput.value = '';
+      updateInputs();
+      document.getElementById('weightInput').focus();
+    }
+
+    bmiSystem.addEventListener('change', updateInputs);
+    [weightInput, heightCmInput, heightFtInput, heightInInput].forEach(el => {
+      el.addEventListener('input', calculateBMI);
+    });
+
+    bmiCopyBtn.addEventListener('click', () => {
+      const result = `${bmiValue.textContent} — ${bmiCategory.textContent}`;
+      if (result.startsWith('—')) return;
+      navigator.clipboard.writeText(result).then(() => showToast('BMI copied!', 'success'));
+    });
+
+    bmiResetBtn.addEventListener('click', resetForm);
+    updateInputs();
+  </script>
+</body>
+</html>
