@@ -3,6 +3,4 @@ Allow: /
 
 Sitemap: https://dailynumbertask.in/sitemap.xml
 
-# Block common bots from legal pages
-User-agent: *
-Disallow: /icons/
+# Note: keep public assets (CSS/JS/icons) accessible to crawlers for proper rendering

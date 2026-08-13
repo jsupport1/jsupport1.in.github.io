@@ -23,7 +23,7 @@ export function renderHeader(activePage = '') {
       <div class="nav-dropdown">
         <button class="nav-link nav-dropdown-btn ${['tool', 'unit', 'currency', 'base', 'cheque-writer'].includes(activePage) ? 'active' : ''}" aria-haspopup="true" aria-expanded="false">Tools ▾</button>
         <div class="nav-dropdown-content">
-          <a href="${prefix}pages/tool.html" class="nav-link ${activePage === 'tool' ? 'active' : ''}" aria-current="${activePage === 'tool' ? 'page' : 'false'}">Converter</a>
+          <a href="${prefix}number-to-words/index.html" class="nav-link ${activePage === 'tool' ? 'active' : ''}" aria-current="${activePage === 'tool' ? 'page' : 'false'}">Converter</a>
           <a href="${prefix}unit/index.html" class="nav-link ${activePage === 'unit' ? 'active' : ''}" aria-current="${activePage === 'unit' ? 'page' : 'false'}">Unit Converter</a>
           <a href="${prefix}currency/index.html" class="nav-link ${activePage === 'currency' ? 'active' : ''}" aria-current="${activePage === 'currency' ? 'page' : 'false'}">Currency Converter</a>
           <a href="${prefix}base/index.html" class="nav-link ${activePage === 'base' ? 'active' : ''}" aria-current="${activePage === 'base' ? 'page' : 'false'}">Base Converter</a>
@@ -57,9 +57,9 @@ export function renderHeader(activePage = '') {
           <a href="${prefix}hash-generator/index.html" class="nav-link ${activePage === 'hash-generator' ? 'active' : ''}" aria-current="${activePage === 'hash-generator' ? 'page' : 'false'}">Hash Generator</a>
         </div>
       </div>
-      <a href="${prefix}pages/about.html"          class="nav-link ${activePage === 'about' ? 'active' : ''}" aria-current="${activePage === 'about' ? 'page' : 'false'}">About</a>
+      <a href="${prefix}about/index.html"          class="nav-link ${activePage === 'about' ? 'active' : ''}" aria-current="${activePage === 'about' ? 'page' : 'false'}">About</a>
       <a href="${prefix}pages/blog.html"           class="nav-link ${activePage === 'blog' ? 'active' : ''}" aria-current="${activePage === 'blog' ? 'page' : 'false'}">Blog</a>
-      <a href="${prefix}pages/contact.html"        class="nav-link ${activePage === 'contact' ? 'active' : ''}" aria-current="${activePage === 'contact' ? 'page' : 'false'}">Contact</a>
+      <a href="${prefix}contact/index.html"        class="nav-link ${activePage === 'contact' ? 'active' : ''}" aria-current="${activePage === 'contact' ? 'page' : 'false'}">Contact</a>
       ${ctaBtn}
       <!-- Social icons in nav (desktop) -->
       <div class="nav-social" aria-label="Follow us">
@@ -81,21 +81,9 @@ export function renderHeader(activePage = '') {
 }
 export function renderFooter() {
   const year = new Date().getFullYear();
-  const isRoot = !([
-    '/pages/',
-    '/age-calculator/',
-    '/date-difference/',
-    '/countdown/',
-    '/timezone/',
-    '/working-days/',
-    '/password-generator/',
-    '/uuid-generator/',
-    '/hash-generator/',
-    '/unit/',
-    '/currency/',
-    '/base/'
-  ].some(dir => window.location.pathname.includes(dir)));
-  const prefix = isRoot ? '' : '../';
+  // Determine relative prefix by path depth: if we're in a subfolder, use '../'
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const prefix = pathParts.length > 1 ? '../' : '';
   return `
 <footer class="site-footer" role="contentinfo">
   <div class="container">
@@ -125,11 +113,11 @@ export function renderFooter() {
       <div class="footer-col">
         <div class="footer-col__title">Number</div>
         <ul class="footer-links">
-          <li><a href="${prefix}pages/tool.html">Number to Words</a></li>
-          <li><a href="${prefix}pages/tool.html">Currency Words</a></li>
+          <li><a href="${prefix}number-to-words/index.html">Number to Words</a></li>
+          <li><a href="${prefix}number-to-words/index.html">Currency Words</a></li>
           <li><a href="${prefix}pages/cheque-writer.html">Cheque Writer</a></li>
-          <li><a href="${prefix}pages/tool.html">Roman Numerals</a></li>
-          <li><a href="${prefix}pages/tool.html">Bulk Converter</a></li>
+          <li><a href="${prefix}number-to-words/index.html">Roman Numerals</a></li>
+          <li><a href="${prefix}number-to-words/index.html">Bulk Converter</a></li>
           <li><a href="${prefix}pages/emi-calculator.html">EMI Calculator</a></li>
           <li><a href="${prefix}pages/fd-calculator.html">FD Calculator</a></li>
           <li><a href="${prefix}pages/bmi-calculator.html">BMI Calculator</a></li>
@@ -163,8 +151,8 @@ export function renderFooter() {
       <div class="footer-col">
         <div class="footer-col__title">Company</div>
         <ul class="footer-links">
-          <li><a href="${prefix}pages/about.html">About Us</a></li>
-          <li><a href="${prefix}pages/contact.html">Contact</a></li>
+          <li><a href="${prefix}about/index.html">About Us</a></li>
+          <li><a href="${prefix}contact/index.html">Contact</a></li>
           <li>
             <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer">
               YouTube
@@ -176,17 +164,17 @@ export function renderFooter() {
       <div class="footer-col">
         <div class="footer-col__title">Legal</div>
         <ul class="footer-links">
-          <li><a href="${prefix}pages/privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="${prefix}pages/terms.html">Terms of Service</a></li>
-          <li><a href="${prefix}pages/disclaimer.html">Disclaimer</a></li>
-          <li><a href="${prefix}pages/cookie-policy.html">Cookie Policy</a></li>
+          <li><a href="${prefix}privacy-policy/index.html">Privacy Policy</a></li>
+          <li><a href="${prefix}terms/index.html">Terms of Service</a></li>
+          <li><a href="${prefix}disclaimer/index.html">Disclaimer</a></li>
+          <li><a href="${prefix}cookie-policy/index.html">Cookie Policy</a></li>
           <li><a href="${prefix}pages/copyright.html">Copyright</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <p>© ${year} DailyNumberTask. All rights reserved.</p>
-      <p>Built with ❤️ · 100% browser-based · No data stored · Free forever</p>
+      <p>Built with ❤️ · 100% browser-based · No data stored</p>
     </div>
   </div>
 </footer>
@@ -201,8 +189,8 @@ export function renderFooter() {
   <div style="max-width:var(--max-w);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;">
     <p style="font-size:var(--sz-sm);margin:0;max-width:none;color:rgba(255,255,255,0.8);">
       We use cookies to serve ads and analyse traffic. By continuing, you agree to our
-      <a href="${prefix}pages/cookie-policy.html" style="color:var(--clr-accent-0);">Cookie Policy</a> and
-      <a href="${prefix}pages/privacy-policy.html" style="color:var(--clr-accent-0);">Privacy Policy</a>.
+      <a href="${prefix}cookie-policy/index.html" style="color:var(--clr-accent-0);">Cookie Policy</a> and
+      <a href="${prefix}privacy-policy/index.html" style="color:var(--clr-accent-0);">Privacy Policy</a>.
     </p>
     <div style="display:flex;gap:0.5rem;flex-shrink:0;">
       <button id="cookieDecline" class="btn btn--ghost btn--sm" style="color:rgba(255,255,255,0.6);border-color:rgba(255,255,255,0.2);">Decline</button>

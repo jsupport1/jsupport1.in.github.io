@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About DailyNumberTask — Number & Financial Tools</title>
+  <meta name="description" content="About DailyNumberTask — free browser-based number to words converters, cheque writer, calculators and utilities. Learn why we built the site and how it works.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dailynumbertask.in/about/">
+  <meta property="og:title" content="About DailyNumberTask">
+  <meta property="og:description" content="Free browser-based number to words converters, cheque writer, calculators and developer utilities.">
+  <meta property="og:url" content="https://dailynumbertask.in/about/">
+  <link rel="stylesheet" href="../css/main.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"About DailyNumberTask","url":"https://dailynumbertask.in/about/"}
+  </script>
+</head>
+<body>
+  <div id="header-mount"></div>
+  <main id="main-content">
+    <section class="section--sm">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="../index.html">Home</a>
+          <span class="breadcrumb__sep" aria-hidden="true">›</span>
+          <span aria-current="page">About</span>
+        </nav>
+        <h1>About DailyNumberTask</h1>
+        <p class="lead">DailyNumberTask provides fast, privacy-first browser tools to convert numbers to words, write cheque-ready amounts, and run common financial and utility calculations. All tools run entirely in your browser — no accounts, no server uploads.</p>
+
+        <h2>What we offer</h2>
+        <ul>
+          <li>Number to words (Indian & international systems)</li>
+          <li>Cheque writer and currency wording</li>
+          <li>Financial calculators: EMI, FD, margin</li>
+          <li>Date & time tools: Age, Date Difference, Time Zone</li>
+          <li>Security utilities: Password, UUID, Hash</li>
+        </ul>
+
+        <h2>Why we built this</h2>
+        <p>To provide reliable, small, offline-capable utilities that help users write numbers correctly in documents, cheques, and reports — with particular care for the Indian Lakh/Crore system and international formats.</p>
+
+        <h2>How conversions are performed</h2>
+        <p>All conversions use the site's JavaScript engine (`js/engine.js`). For large integers the engine uses BigInt to avoid precision loss. Currency and cheque formats follow commonly used banking conventions; calculations are approximate and intended for informational use.</p>
+
+        <h2>Privacy & accuracy</h2>
+        <p>We prioritise privacy: conversions run locally and, unless you opt in, no personal data is sent to our servers. We continuously test and update the conversion engine, but recommend verifying critical financial figures with your bank or provider.</p>
+
+        <h2>Report an issue</h2>
+        <p>If you find an error or have feedback, please use our <a href="../contact/index.html">Contact</a> page to report it. Include the number, expected result, and browser/OS if possible.</p>
+
+      </div>
+    </section>
+  </main>
+  <div id="footer-mount"></div>
+  <script type="module">
+    import { renderHeader, renderFooter, initLayout } from '../js/layout.js';
+    document.getElementById('header-mount').innerHTML = renderHeader('about');
+    document.getElementById('footer-mount').innerHTML = renderFooter();
+    initLayout();
+  </script>
+</body>
+</html>
