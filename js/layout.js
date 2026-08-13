@@ -142,15 +142,7 @@ export function renderFooter() {
           <li><a href="${prefix}working-days/index.html">Working Days Calc</a></li>
         </ul>
       </div>
-      <!-- Security Column -->
-      <div class="footer-col">
-        <div class="footer-col__title">Security</div>
-        <ul class="footer-links">
-          <li><a href="${prefix}password-generator/index.html">Password Gen</a></li>
-          <li><a href="${prefix}uuid-generator/index.html">UUID Generator</a></li>
-          <li><a href="${prefix}hash-generator/index.html">Hash Generator</a></li>
-        </ul>
-      </div>
+   
       <div class="footer-col">
         <div class="footer-col__title">AboutUs</div>
         <ul class="footer-links">
