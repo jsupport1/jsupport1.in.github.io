@@ -61,17 +61,7 @@ export function renderHeader(activePage = '') {
       <a href="${prefix}pages/blog.html"           class="nav-link ${activePage === 'blog' ? 'active' : ''}" aria-current="${activePage === 'blog' ? 'page' : 'false'}">Blog</a>
       <a href="${prefix}pages/contact.html"        class="nav-link ${activePage === 'contact' ? 'active' : ''}" aria-current="${activePage === 'contact' ? 'page' : 'false'}">Contact</a>
       ${ctaBtn}
-      <!-- Social icons in nav (desktop) -->
-      <div class="nav-social" aria-label="Follow us">
-        <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer"
-          class="nav-social-link nav-social-link--youtube"
-          aria-label="DailyNumberTask on YouTube" title="YouTube">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/>
-          </svg>
-        </a>
       
-      </div>
     </nav>
     <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation menu">
       <span></span><span></span><span></span>
@@ -109,17 +99,7 @@ export function renderFooter() {
       <!-- Brand + social -->
       <div class="footer-brand">
         <div class="footer-brand__name">DailyNumberTask</div>
-        <p style="color:var(--clr-accent-0);">Free, fast, privacy-first conversion, calculation &amp; date tools. Works offline. No account needed.</p>
-        <!-- Social links in footer -->
-        <div class="social-links mt-2" aria-label="Follow DailyNumberTask">
-          <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer"
-            class="social-link social-link--youtube" aria-label="YouTube channel" title="YouTube">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/>
-            </svg>
-          </a>
-        
-        </div>
+        <p style="color:var(--clr-accent-0);">Fast, privacy-first conversion, calculation, and date tools. Works offline and does not require an account.</p>
       </div>
       <!-- Tools column — now includes EMI Calculator -->
       <div class="footer-col">
@@ -165,12 +145,6 @@ export function renderFooter() {
         <ul class="footer-links">
           <li><a href="${prefix}pages/about.html">About Us</a></li>
           <li><a href="${prefix}pages/contact.html">Contact</a></li>
-          <li>
-            <a href="https://www.youtube.com/@DailyNumberTasks" target="_blank" rel="noopener noreferrer">
-              YouTube
-            </a>
-          </li>
-         
         </ul>
       </div>
       <div class="footer-col">
