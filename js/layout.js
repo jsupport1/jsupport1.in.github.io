@@ -99,7 +99,7 @@ export function renderFooter() {
       <!-- Brand + social -->
       <div class="footer-brand">
         <div class="footer-brand__name">DailyNumberTask</div>
-        <p style="color:var(--clr-accent-0);">Fast, privacy-first conversion, calculation, and date tools. Works offline and does not require an account.</p>
+        <p style="color:var(--clr-accent-0);">Fast, privacy-first tools for conversions, calculations, and dates. Works offline and requires no account.</p>
       </div>
       <!-- Tools column — now includes EMI Calculator -->
       <div class="footer-col">
