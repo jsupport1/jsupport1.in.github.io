@@ -120,6 +120,26 @@ export function renderFooter() {
           <li><a href="${prefix}pages/blog.html">Blog</a></li>
         </ul>
       </div>
+      <!-- Calculator Column -->
+      <div class="footer-col">
+        <div class="footer-col__title">Calculator</div>
+        <ul class="footer-links">
+          <li><a href="${prefix}pages/emi-calculator.html">EMI Calculator</a></li>
+          <li><a href="${prefix}pages/fd-calculator.html">FD Calculator</a></li>
+          <li><a href="${prefix}pages/bmi-calculator.html">BMI Calculator</a></li>
+          <li><a href="${prefix}pages/margin-calculator.html">Margin Calculator</a></li>
+        </ul>
+      </div>
+      <!-- Converter Column -->
+      <div class="footer-col">
+        <div class="footer-col__title">Converter</div>
+        <ul class="footer-links">
+          <li><a href="${prefix}unit/index.html">Unit Converter</a></li>
+          <li><a href="${prefix}currency/index.html">Currency Converter</a></li>
+          <li><a href="${prefix}base/index.html">Base Converter</a></li>
+          <li><a href="${prefix}pages/tool.html">Bulk Converter</a></li>
+        </ul>
+      </div>
       <!-- Date & Time Column -->
       <div class="footer-col">
         <div class="footer-col__title">Date &amp; Time</div>
@@ -141,15 +161,10 @@ export function renderFooter() {
         </ul>
       </div>
       <div class="footer-col">
-        <div class="footer-col__title">Company</div>
+        <div class="footer-col__title">AboutUs</div>
         <ul class="footer-links">
-          <li><a href="${prefix}pages/about.html">About Us</a></li>
+          <li><a href="${prefix}pages/about.html">About</a></li>
           <li><a href="${prefix}pages/contact.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col__title">Legal</div>
-        <ul class="footer-links">
           <li><a href="${prefix}pages/privacy-policy.html">Privacy Policy</a></li>
           <li><a href="${prefix}pages/terms.html">Terms of Service</a></li>
           <li><a href="${prefix}pages/disclaimer.html">Disclaimer</a></li>
