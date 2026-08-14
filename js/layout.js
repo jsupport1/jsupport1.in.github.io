@@ -59,7 +59,7 @@ export function renderHeader(activePage = '') {
       </div>
       <a href="${prefix}pages/about.html"          class="nav-link ${activePage === 'about' ? 'active' : ''}" aria-current="${activePage === 'about' ? 'page' : 'false'}">About</a>
       <a href="${prefix}pages/blog.html"           class="nav-link ${activePage === 'blog' ? 'active' : ''}" aria-current="${activePage === 'blog' ? 'page' : 'false'}">Blog</a>
-      <a href="${prefix}pages/contact.html"        class="nav-link ${activePage === 'contact' ? 'active' : ''}" aria-current="${activePage === 'contact' ? 'page' : 'false'}">Contact</a>
+      <a href="${prefix}pages/contact.html"        class="nav-link ${activePage === 'contact' ? 'active' : ''}" aria-current="${activePage === 'contact' ? 'page' : 'false'}">Contact Us</a>
       ${ctaBtn}
       
     </nav>
@@ -148,7 +148,7 @@ export function renderFooter() {
         <ul class="footer-links">
           <li><a href="${prefix}pages/about.html">About</a></li>
           <li><a href="${prefix}pages/blog.html">Blog</a></li>
-          <li><a href="${prefix}pages/contact.html">Contact</a></li>
+          <li><a href="${prefix}pages/contact.html">Contact Us</a></li>
           <li><a href="${prefix}pages/privacy-policy.html">Privacy Policy</a></li>
           <li><a href="${prefix}pages/terms.html">Terms of Service</a></li>
           <li><a href="${prefix}pages/disclaimer.html">Disclaimer</a></li>
